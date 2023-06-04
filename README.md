@@ -27,42 +27,14 @@ yarn add @lemonaderoom/foundation
 
 ## 使い方
 
-### Optional型の作成
+テストコードをご覧ください
 
-`Optional`型を作成するために、`some`と`none`関数を提供しています。
-
-```ts
-import { some, none } from "@lemonaderoom/foundation";
-
-const option1 = some("hello"); // 値が存在する場合
-const option2 = none(); // 値が存在しない場合
-```
-
-Nullableな値をOptional型に変換するには、`optional`関数を使用します。
-
-```ts
-import { optional } from "@lemonaderoom/foundation";
-
-const value = null as string | null;
-const option = optional(value); // noneを返す
-```
-
-### Optional型の操作
-
-Optional型はいくつかのメソッドを提供しています。
-
-- `get` - 値が存在する場合にその値を返し、存在しない場合はエラーをスローします。
-- `getOrElse` - 値が存在する場合にその値を返し、存在しない場合はデフォルト値を返します。
-- `orElse` - 値が存在する場合にそのOptional型を返し、存在しない場合はデフォルトのOptional型を返します。
-- `isDefined` - 値が存在する場合にtrueを返します。
-- `isEmpty` - 値が存在しない場合にtrueを返します。
-- `map` - 値が存在する場合に関数を適用してその結果を持つ新しいOptional型を返します。
-- `flatMap` - 値が存在する場合に関数を適用してその結
-
-果を持つ新しいOptional型を返します。関数はOptional型を返す必要があります。
-- `equals` - 他のOptional型と比較します。
-- `fold` - 値が存在する場合と存在しない場合で適用する関数を切り替えます。
-- `unwrap` - 値が存在する場合にその値を返し、存在しない場合は提供されたエラーをスローします。
+- [Optional](src/optional/optional.test.ts)
+  - [Some](src/optional/some.test.ts)
+  - [None](src/optional/none.test.ts)
+- [Result](src/result/result.test.ts)
+  - [Success](src/result/success.test.ts)
+  - [Failure](src/result/failure.test.ts)
 
 ## テストの実行
 

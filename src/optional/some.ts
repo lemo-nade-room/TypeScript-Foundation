@@ -27,9 +27,15 @@ export class Some<T> implements Optional<T> {
     return f(this.value);
   }
 
-  equals(compare: Optional<T>): boolean {
-    if (compare.isEmpty) return false;
-    return this.value === compare.value;
+  equals(
+    compared: Optional<T>,
+    comparisonFunc?: (a: T, b: T) => boolean
+  ): boolean {
+    if (compared.isEmpty) return false;
+    if (comparisonFunc === undefined) {
+      return this.value === compared.value;
+    }
+    return comparisonFunc(this.value, compared.value!);
   }
 
   fold<U>(left: () => U, right: (value: T) => U): U {

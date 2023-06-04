@@ -60,6 +60,18 @@ describe("Some Tests", () => {
     expect(option1.equals(option2)).toBeFalsy();
   });
 
+  test("引数に関数が与えられた場合はsome同士ならば関数の戻り値がtrueならばtrueを返す", () => {
+    const option1 = some({ num: 3 });
+    const option2 = some({ num: 3 });
+    expect(option1.equals(option2, (a, b) => a.num === b.num)).toBeTruthy();
+  });
+
+  test("引数に関数が与えられた場合はsome同士ならば関数の戻り値がfalseならばfalseを返す", () => {
+    const option1 = some({ num: 3 });
+    const option2 = some({ num: 3 });
+    expect(option1.equals(option2, () => false)).toBeFalsy();
+  });
+
   test("noneと比較するとfalseを返す", () => {
     const option1 = some(10);
     const option2 = none<number>();

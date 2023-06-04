@@ -24,7 +24,10 @@ export interface Optional<T> {
 
   flatMap<U>(f: (value: T) => Optional<U>): Optional<U>;
 
-  equals(compared: Optional<T>): boolean;
+  equals(
+    compared: Optional<T>,
+    comparisonFunc?: (a: T, b: T) => boolean
+  ): boolean;
 
   fold<U>(left: () => U, right: (value: T) => U): U;
 

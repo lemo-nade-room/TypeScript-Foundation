@@ -3,11 +3,13 @@
 [![NPM version](https://img.shields.io/npm/v/@lemonaderoom/foundation.svg?style=flat)](https://npmjs.org/package/@lemonaderoom/foundation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-TypeScript Foundation Libraryです。Nullableな値を安全に扱うための`Optional`型を提供します。
+TypeScript Foundation Libraryです。
+
+関数型が好きでもない人がSwiftらしく使いたくて苦し紛れに自作するScalaっぽいライブラリ
 
 ## 特長
 
-- SwiftチックなScala風のOptional型とResult型
+- SwiftチックなScala風のJava感あふれるOptional型とResult型
 
 ## インストール
 

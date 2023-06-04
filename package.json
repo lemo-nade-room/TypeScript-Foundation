@@ -1,6 +1,6 @@
 {
   "name": "@lemonaderoom/foundation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TypeScript Foundation Library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   "keywords": [
     "optional"
   ],
-  "author": "Lemonade-Room",
+  "author": "lemo-nade-room (https://github.com/lemo-nade-room)",
   "license": "MIT",
   "devDependencies": {
     "prettier": "^2.8.8",

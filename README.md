@@ -1,7 +1,6 @@
 # @lemonaderoom/foundation
 
 [![NPM version](https://img.shields.io/npm/v/@lemonaderoom/foundation.svg?style=flat)](https://npmjs.org/package/@lemonaderoom/foundation)
-[![Build Status](https://github.com/lemo-nade-room/foundation/actions/workflows/test.yaml/badge.svg)](https://github.com/Lemonade-Room/foundation/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 TypeScript Foundation Libraryです。Nullableな値を安全に扱うための`Optional`型を提供します。
@@ -17,7 +16,7 @@ TypeScript Foundation Libraryです。Nullableな値を安全に扱うための`
 以下のコマンドを使用して、npm経由でパッケージをプロジェクトにインストールします:
 
 ```bash
-npm install @lemonaderoom/foundation
+npm i -D @lemonaderoom/foundation
 ```
 
 もしくは、yarnを使用する場合は次のコマンドを使用します:

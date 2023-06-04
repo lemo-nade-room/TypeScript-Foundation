@@ -7,9 +7,7 @@ TypeScript Foundation Libraryです。Nullableな値を安全に扱うための`
 
 ## 特長
 
-- TypeScriptの強力な型システムを活用し、Nullableな値を安全に扱うことが可能
-- チェイン可能なメソッドを提供、関数型プログラミングスタイルにも対応
-- 丁寧に設計されたAPIと詳細なテストにより、信頼性の高いコードベース
+- SwiftチックなScala風のOptional型とResult型
 
 ## インストール
 

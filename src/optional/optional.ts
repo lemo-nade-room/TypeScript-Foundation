@@ -1,5 +1,6 @@
 import { none } from "./none";
 import { some } from "./some";
+import { Result } from "../result/result";
 
 export interface Optional<T> {
   /** 値が存在しない場合はErrorを投げる */
@@ -32,6 +33,8 @@ export interface Optional<T> {
   fold<U>(left: () => U, right: (value: T) => U): U;
 
   unwrap(or: Error): T;
+
+  toResult<E>(err: E): Result<T, E>;
 }
 
 export function optional<T>(value: T | null | undefined): Optional<T> {

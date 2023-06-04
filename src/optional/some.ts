@@ -1,4 +1,6 @@
 import { Optional } from "./optional";
+import { Result } from "../result/result";
+import { success } from "../result/success";
 
 export class Some<T> implements Optional<T> {
   constructor(readonly value: T) {}
@@ -44,6 +46,10 @@ export class Some<T> implements Optional<T> {
 
   unwrap(or: Error): T {
     return this.value;
+  }
+
+  toResult<E>(_: E): Result<T, E> {
+    return success(this.value);
   }
 }
 

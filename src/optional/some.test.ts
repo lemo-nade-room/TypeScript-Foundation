@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { some } from "./some";
 import { none } from "./none";
+import { success } from "../result/success";
 
 describe("Some Tests", () => {
   test("getで値を取り出せる", () => {
@@ -91,5 +92,10 @@ describe("Some Tests", () => {
   test("unwrapで値を取り出せる", () => {
     const option = some(10);
     expect(option.unwrap(new Error("Error"))).toBe(10);
+  });
+
+  test("toResultでsuccessに変換する", () => {
+    const option = some(10);
+    expect(option.toResult(new Error("error"))).toEqual(success(10));
   });
 });

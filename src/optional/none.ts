@@ -1,4 +1,5 @@
 import { Optional } from "./optional";
+import { Failure, failure } from "../result/failure";
 
 export class None<T> implements Optional<T> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -42,6 +43,10 @@ export class None<T> implements Optional<T> {
 
   unwrap(or: Error): T {
     throw or;
+  }
+
+  toResult<E>(error: E): Failure<T, E> {
+    return failure(error);
   }
 }
 

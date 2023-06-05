@@ -4,9 +4,7 @@ import { Range } from "./range";
 import { ClosedRange } from "./closedRange";
 
 /** a ... */
-export class OpenRange<T extends IComparable = number> extends Updatable<
-  OpenRange<T>
-> {
+export class OpenRange<T extends IComparable> extends Updatable<OpenRange<T>> {
   constructor(readonly minimum: T) {
     super();
   }

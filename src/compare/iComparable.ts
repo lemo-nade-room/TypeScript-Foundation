@@ -1,5 +1,7 @@
-export interface Comparable<T> {
-  compare(compared: T): boolean;
+import { IEquatableObject } from "../equality";
+
+export interface Comparable<Self> extends IEquatableObject<Self> {
+  compare(compared: Self): boolean;
 }
 
 export type IComparable = string | number | bigint | Comparable<unknown>;

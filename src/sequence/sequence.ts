@@ -3,6 +3,7 @@ import { clone, IClonable } from "../clone";
 import { none, Optional, optional } from "../optional";
 import * as crypto from "crypto";
 import { ClosedRange, OpenRange, Range } from "../range";
+import { compare } from "../compare";
 
 export class Sequence<T>
   implements
@@ -56,14 +57,23 @@ export class Sequence<T>
     ]);
   }
 
+  remove(at: number): Sequence<T> {
+    return new Sequence([
+      ...this.values.slice(0, at),
+      ...this.values.slice(at + 1),
+    ]);
+  }
+
   /** 文字列の配列を結合する */
   join(separator: string): string {
     return this.values.join(separator);
   }
 
   /** 要素を変換する */
-  map<U>(f: (value: T) => U): Sequence<U> {
-    return new Sequence(this.values.map(f));
+  map<U>(
+    f: (value: T, index: number, sequence: Sequence<T>) => U
+  ): Sequence<U> {
+    return new Sequence(this.values.map((v, i, arr) => f(v, i, seq(arr))));
   }
 
   /** 要素をフラットに変換する */
@@ -74,6 +84,121 @@ export class Sequence<T>
   /** 要素をフィルタリングする */
   filter(f: (value: T) => boolean): Sequence<T> {
     return new Sequence(this.values.filter(f));
+  }
+
+  /** 連結する */
+  concat(elements: Sequence<T>): Sequence<T> {
+    return new Sequence(this.values.concat(elements.values));
+  }
+
+  /** 全ての要素が条件を満たす際にtrueを返す */
+  every(f: (value: T, index: number, array: Sequence<T>) => boolean): boolean {
+    return this.values.every((value, index, array) =>
+      f(value, index, seq(array))
+    );
+  }
+
+  /** どれかの要素が条件を満たす際にtrueを返す */
+  some(f: (value: T, index: number, array: Sequence<T>) => boolean): boolean {
+    return this.values.some((value, index, array) =>
+      f(value, index, seq(array))
+    );
+  }
+
+  /** ソートする。元のSequenceに影響はない */
+  sorted(sorter?: (a: T, b: T) => boolean): Sequence<T> {
+    const result = this.clone.values.slice().sort((a, b) => {
+      if (sorter == null) {
+        if (equals(a, b)) return 0;
+        return compare(a, b) ? -1 : 1;
+      }
+      return sorter(a, b) ? -1 : 1;
+    });
+    return new Sequence(result);
+  }
+
+  /** 最大値を取得する */
+  max(sorter?: (a: T, b: T) => boolean): Optional<T> {
+    return this.sorted(sorter).last;
+  }
+
+  /** 最小値を取得する */
+  min(sorter?: (a: T, b: T) => boolean): Optional<T> {
+    return this.sorted(sorter).first;
+  }
+
+  /** 検索する */
+  find(
+    f: (value: T, index: number, array: Sequence<T>) => boolean
+  ): Optional<T> {
+    return optional(
+      this.values.find((value, index, array) => f(value, index, seq(array)))
+    );
+  }
+
+  /** index付きのSequenceを返す */
+  get enumerated(): Sequence<{ index: number; value: T }> {
+    return this.map((value, index) => ({ index, value }));
+  }
+
+  /** 要素を逆順に並び替えたものを返す */
+  get reversed(): Sequence<T> {
+    return this.reduce(seq(), (reverse, element) => {
+      return reverse.insert(element, 0);
+    });
+  }
+
+  /** 要素が存在するか判別する */
+  contains(element: T): boolean {
+    return this.some((value) => equals(value, element));
+  }
+
+  firstIndex(of: T): Optional<number> {
+    return this.enumerated
+      .find(({ value }) => equals(value, of))
+      .map((value) => value.index);
+  }
+
+  /** 要素をランダムに並び替えたものを返す */
+  get shuffled(): Sequence<T> {
+    let result = seq<T>();
+    let sequence = this.clone;
+    while (sequence.nonEmpty) {
+      const random = sequence.enumerated.randomElement().get;
+      sequence = sequence.remove(random.index);
+      result = result.append(random.value);
+    }
+    return result;
+  }
+
+  /** 範囲の要素を置き換える */
+  replaceSubrange(
+    subrange: Range<number> | ClosedRange<number> | OpenRange<number>,
+    withNewElements: readonly T[] | Sequence<T>
+  ): Sequence<T> {
+    const elements = seq(withNewElements);
+    if (subrange instanceof OpenRange) {
+      return new Sequence([
+        ...this.values.slice(0, subrange.minimum),
+        ...elements.values,
+        ...this.values.slice(subrange.minimum + elements.count),
+      ]);
+    }
+    if (subrange instanceof Range) {
+      return new Sequence([
+        ...this.values.slice(0, subrange.minimum),
+        ...elements.values,
+        ...this.values.slice(subrange.maximum),
+      ]);
+    }
+    if (subrange instanceof ClosedRange) {
+      return new Sequence([
+        ...this.values.slice(0, subrange.minimum),
+        ...elements.values,
+        ...this.values.slice(subrange.maximum + 1),
+      ]);
+    }
+    return this;
   }
 
   /** 要素を集約する */
@@ -136,6 +261,7 @@ export class Sequence<T>
   }
 }
 
-export function seq<T>(array: readonly T[] = []): Sequence<T> {
+export function seq<T>(array: readonly T[] | Sequence<T> = []): Sequence<T> {
+  if (array instanceof Sequence) return array.clone;
   return new Sequence<T>(array);
 }

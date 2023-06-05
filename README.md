@@ -78,8 +78,8 @@ classDiagram
     Updatable <|-- Codable
     Comparable : 
     Clonable <|-- Optional
+    Clonable <|-- Result
     Updatable <|-- Range
-    Updatable <|-- Result
     Clonable <|-- Sequence
  
 ```

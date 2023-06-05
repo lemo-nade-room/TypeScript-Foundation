@@ -1,8 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { seq } from "./sequence";
-import { assertEquals } from "../equality";
+import { assertEquals, Equatable } from "../equality";
 import { none, some } from "../optional";
 import { from } from "../range";
+import { Comparable } from "../compare";
 
 describe("Sequence Tests", () => {
   test("getで要素を取得できる", () => {
@@ -110,6 +111,13 @@ describe("Sequence Tests", () => {
     assertEquals(actual, expected);
   });
 
+  test("removeで指定した位置の要素を削除できる", () => {
+    const sequence = seq([1, 2, 3]);
+    const expected = seq([1, 3]);
+    const actual = sequence.remove(1);
+    assertEquals(actual, expected);
+  });
+
   test("mapで値を変換できる", () => {
     const sequence = seq([1, 2, 3]);
     const expected = seq([2, 4, 6]);
@@ -138,6 +146,111 @@ describe("Sequence Tests", () => {
     expect(actual).toBe(expected);
   });
 
+  test("全ての要素がtrueのときにeveryがtrueを返す", () => {
+    const sequence = seq([1, 2, 3]);
+    const actual = sequence.every((n) => n > 0);
+    expect(actual).toBeTruthy();
+  });
+
+  test("どれか一つの要素がfalseのときにeveryがfalseを返す", () => {
+    const sequence = seq([1, -1, 3]);
+    const actual = sequence.every((n) => n > 0);
+    expect(actual).toBeFalsy();
+  });
+
+  test("どれか1つの要素がtrueのときにsomeがtrueを返す", () => {
+    const sequence = seq([-1, 2, 3]);
+    const actual = sequence.some((n) => n < 0);
+    expect(actual).toBeTruthy();
+  });
+
+  test("どれか一つの要素がfalseのときにsomeがfalseを返す", () => {
+    const sequence = seq([1, 2, 3]);
+    const actual = sequence.some((n) => n < 0);
+    expect(actual).toBeFalsy();
+  });
+
+  test("numberでsortが可能", () => {
+    const sequence = seq([2, 1, 3]);
+    const expected = seq([1, 2, 3]);
+    const actual = sequence.sorted();
+    assertEquals(actual, expected);
+  });
+
+  test("引数でsortが可能", () => {
+    const sequence = seq([2, 1, 3]);
+    const expected = seq([3, 2, 1]);
+    const actual = sequence.sorted((a, b) => a > b);
+    assertEquals(actual, expected);
+  });
+
+  class N extends Equatable<N> implements Comparable<N> {
+    constructor(readonly value: number) {
+      super();
+    }
+    compare(compared: N): boolean {
+      return this.value < compared.value;
+    }
+  }
+  test("Comparable Objectでsortが可能", () => {
+    const sequence = seq([new N(2), new N(1), new N(3)]);
+    const expected = seq([new N(1), new N(2), new N(3)]);
+    const actual = sequence.sorted();
+    assertEquals(actual, expected);
+  });
+
+  test("maxを取得できる", () => {
+    const sequence = seq([new N(2), new N(1), new N(3)]);
+    const expected = some(new N(3));
+    const actual = sequence.max();
+    assertEquals(actual, expected);
+  });
+
+  test("minを取得できる", () => {
+    const sequence = seq([new N(2), new N(1), new N(3)]);
+    const expected = some(new N(1));
+    const actual = sequence.min();
+    assertEquals(actual, expected);
+  });
+
+  test("含むかを確認できる", () => {
+    const sequence = seq([new N(1), new N(2), new N(3)]);
+    expect(sequence.contains(new N(2))).toBeTruthy();
+    expect(sequence.contains(new N(4))).toBeFalsy();
+  });
+
+  test("最初の合致する要素のindexを探す", () => {
+    const sequence = seq([new N(1), new N(2), new N(3)]);
+    const expected = some(1);
+    const actual = sequence.firstIndex(new N(2));
+    assertEquals(actual, expected);
+  });
+
+  test("findをで検索できる", () => {
+    const sequence = seq([1, 2, 3]);
+    const expected = some(2);
+    const actual = sequence.find((n) => n === 2);
+    assertEquals(actual, expected);
+  });
+
+  test("enumeratedでindex付きのが取得できる", () => {
+    const sequence = seq([1, 2, 3]);
+    const expected = seq([
+      { index: 0, value: 1 },
+      { index: 1, value: 2 },
+      { index: 2, value: 3 },
+    ]);
+    const actual = sequence.enumerated;
+    expect(actual).toEqual(expected);
+  });
+
+  test("reversedで逆順に並び替えられる", () => {
+    const sequence = seq([1, 2, 3, 4, 5]);
+    const expected = seq([5, 4, 3, 2, 1]);
+    const actual = sequence.reversed;
+    assertEquals(actual, expected);
+  });
+
   test("open rangeでsliceできる", () => {
     const sequence = seq([1, 2, 3, 4, 5]);
     const expected = seq([3, 4, 5]);
@@ -156,6 +269,40 @@ describe("Sequence Tests", () => {
     const sequence = seq([1, 2, 3, 4, 5]);
     const expected = seq([3, 4, 5]);
     const actual = sequence.slice(from<number>(2).to(4));
+    assertEquals(actual, expected);
+  });
+
+  test("open rangeで入れ替えられる", () => {
+    const sequence = seq([1, 2, 7, 4, 5]);
+    const expected = seq([1, 2, 100, 101, 5]);
+
+    const openRange = from<number>(2);
+    const actual = sequence.replaceSubrange(openRange, [100, 101, 5]);
+    assertEquals(actual, expected);
+  });
+
+  test("rangeで入れ替えられる", () => {
+    const sequence = seq([1, 2, 7, 4, 5]);
+    const expected = seq([1, 2, 100, 101, 5]);
+
+    const range = from<number>(2).until(4);
+    const actual = sequence.replaceSubrange(range, [100, 101]);
+    assertEquals(actual, expected);
+  });
+
+  test("closed rangeで入れ替えられる", () => {
+    const sequence = seq([1, 2, 7, 4, 5]);
+    const expected = seq([1, 2, 100, 101, 5]);
+
+    const closedRange = from<number>(2).to(3);
+    const actual = sequence.replaceSubrange(closedRange, [100, 101]);
+    assertEquals(actual, expected);
+  });
+
+  test("concatで連結できる", () => {
+    const sequence = seq([1, 2, 3]);
+    const expected = seq([1, 2, 3, 4, 5, 6]);
+    const actual = sequence.concat(seq([4, 5, 6]));
     assertEquals(actual, expected);
   });
 });

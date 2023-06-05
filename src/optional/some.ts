@@ -1,6 +1,8 @@
 import { Optional } from "./optional";
-import { Result } from "../result/result";
-import { success } from "../result/success";
+import { Result } from "../result";
+import { success } from "../result";
+import { equals, IEquatable } from "../equality";
+import { None } from "./none";
 
 export class Some<T> implements Optional<T> {
   constructor(readonly value: T) {}
@@ -30,12 +32,15 @@ export class Some<T> implements Optional<T> {
   }
 
   equals(
-    compared: Optional<T>,
+    compared: Optional<T> | T,
     comparisonFunc?: (a: T, b: T) => boolean
   ): boolean {
-    if (compared.isEmpty) return false;
+    if (compared instanceof None) return false;
+    if (!(compared instanceof Some)) {
+      return equals(this.value, compared);
+    }
     if (comparisonFunc === undefined) {
-      return this.value === compared.value;
+      return equals(this.value, compared.value);
     }
     return comparisonFunc(this.value, compared.value!);
   }

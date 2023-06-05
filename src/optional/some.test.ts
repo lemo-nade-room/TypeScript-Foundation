@@ -1,7 +1,8 @@
 import { describe, test, expect } from "vitest";
 import { some } from "./some";
 import { none } from "./none";
-import { success } from "../result/success";
+import { success } from "../result";
+import { Equatable } from "../equality";
 
 describe("Some Tests", () => {
   test("getで値を取り出せる", () => {
@@ -52,6 +53,23 @@ describe("Some Tests", () => {
   test("同じ値同士ならequalsでtrueを返す", () => {
     const option1 = some(10);
     const option2 = some(10);
+    expect(option1.equals(option2)).toBeTruthy();
+  });
+
+  test("optional型でなくてもvalueと同じならequalsでtrueを返す", () => {
+    const option1 = some(10);
+    const value = 10;
+    expect(option1.equals(value)).toBeTruthy();
+  });
+
+  test("equatableならばそれで比較する", () => {
+    class E extends Equatable<E> {
+      constructor(readonly str: string, readonly num: number) {
+        super();
+      }
+    }
+    const option1 = some(new E("hello", 10));
+    const option2 = some(new E("hello", 10));
     expect(option1.equals(option2)).toBeTruthy();
   });
 

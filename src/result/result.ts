@@ -1,8 +1,9 @@
 import { Optional } from "../optional";
 import { success } from "./success";
 import { failure } from "./failure";
+import { IEquatableObject } from "../equality";
 
-export interface Result<T, E> {
+export interface Result<T, E> extends IEquatableObject<Result<T, E>> {
   /** successの場合、値を取得する。failureの場合、Errorを投げる。 */
   readonly get: T;
 

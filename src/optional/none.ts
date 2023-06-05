@@ -33,8 +33,8 @@ export class None<T> implements Optional<T> {
     return none();
   }
 
-  equals(compared: Optional<T>): boolean {
-    return compared.isEmpty;
+  equals(compared: Optional<T> | T, _?: (a: T, b: T) => boolean): boolean {
+    return compared === None.instance;
   }
 
   fold<U>(left: () => U, right: (value: T) => U): U {

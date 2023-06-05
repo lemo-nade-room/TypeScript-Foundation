@@ -1,5 +1,6 @@
 import { Result } from "./result";
 import { none, None } from "../optional";
+import { equals } from "../equality";
 
 export class Failure<T, E> implements Result<T, E> {
   constructor(private readonly error: E) {}
@@ -39,7 +40,7 @@ export class Failure<T, E> implements Result<T, E> {
   ): boolean {
     if (compared.isSuccess) return false;
     if (comparisonFunc === undefined) {
-      return compared.isFailure && this.error === compared.getError;
+      return equals(this.error, compared.getError);
     }
     return comparisonFunc(this.error, compared.getError);
   }

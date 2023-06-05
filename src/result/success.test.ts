@@ -2,6 +2,7 @@ import { describe, test, expect } from "vitest";
 import { success } from "./success";
 import { failure } from "./failure";
 import { some } from "../optional";
+import { Equatable } from "../equality";
 
 describe("Success Tests", () => {
   test("getで値を取得できる", () => {
@@ -67,6 +68,18 @@ describe("Success Tests", () => {
     const result1 = success(10);
     const result2 = success(20);
     expect(result1.equals(result2)).toBeFalsy();
+  });
+
+  class E extends Equatable<E> {
+    constructor(readonly value: number) {
+      super();
+    }
+  }
+
+  test("equalsでsuccess同士でEquatableならばequalsで比較する", () => {
+    const result1 = success(new E(10));
+    const result2 = success(new E(10));
+    expect(result1.equals(result2)).toBeTruthy();
   });
 
   test("equalsでfailureと比較するとfalseを返す", () => {

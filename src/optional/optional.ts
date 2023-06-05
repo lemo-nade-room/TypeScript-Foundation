@@ -1,8 +1,9 @@
 import { none } from "./none";
 import { some } from "./some";
-import { Result } from "../result/result";
+import { Result } from "../result";
+import { IEquatableObject } from "../equality";
 
-export interface Optional<T> {
+export interface Optional<T> extends IEquatableObject<Optional<T> | T> {
   /** 値が存在しない場合はErrorを投げる */
   get get(): T;
 
@@ -26,7 +27,7 @@ export interface Optional<T> {
   flatMap<U>(f: (value: T) => Optional<U>): Optional<U>;
 
   equals(
-    compared: Optional<T>,
+    compared: Optional<T> | T,
     comparisonFunc?: (a: T, b: T) => boolean
   ): boolean;
 

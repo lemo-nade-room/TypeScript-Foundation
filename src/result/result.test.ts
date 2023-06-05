@@ -2,7 +2,6 @@ import { describe, test, expect } from "vitest";
 import { success } from "./success";
 import { asyncResult, result } from "./result";
 import { failure } from "./failure";
-import * as wasi from "wasi";
 
 describe("Result Tests", () => {
   test("関数をsuccessになおす", () => {

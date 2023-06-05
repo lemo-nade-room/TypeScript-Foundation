@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { seq } from "./sequence";
-import { assertEquals, Equatable } from "../equality";
+import { assertEquals } from "../equality/assertion.test";
 import { none, some } from "../optional";
 import { from } from "../range";
 import { Comparable } from "../compare";

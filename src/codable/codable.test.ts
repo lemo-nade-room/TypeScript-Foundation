@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { Codable } from "./codable";
-import { assertEquals } from "../equality";
+import { assertEquals } from "../equality/assertion.test";
 
 describe("Codable Tests", () => {
   class A extends Codable<A> {

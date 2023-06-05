@@ -5,11 +5,11 @@
 
 TypeScript Foundation Libraryです。
 
-関数型が好きでもない人がSwiftらしく使いたくて苦し紛れに自作するScalaっぽいライブラリ
-
 ## 特長
 
-- SwiftチックなScala風のJava感あふれるOptional型とResult型
+- SwiftのEquatableに似たEquatable型
+- SwiftとScalaとJavaに似たOptional型
+- SwiftのResultとScalaのEitherに似たResult型
 
 ## インストール
 
@@ -29,6 +29,7 @@ yarn add @lemonaderoom/foundation
 
 テストコードをご覧ください
 
+- [Equatable](src/equality/equatable.test.ts)
 - [Optional](src/optional/optional.test.ts)
   - [Some](src/optional/some.test.ts)
   - [None](src/optional/none.test.ts)

@@ -5,4 +5,5 @@ export * from "./equality/index";
 export * from "./for/index";
 export * from "./optional/index";
 export * from "./result/index";
+export * from "./sequence/index";
 export * from "./update/index";

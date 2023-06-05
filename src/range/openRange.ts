@@ -4,7 +4,9 @@ import { Range } from "./range";
 import { ClosedRange } from "./closedRange";
 
 /** a ... */
-export class OpenRange<T extends IComparable> extends Updatable<OpenRange<T>> {
+export class OpenRange<T extends IComparable = number> extends Updatable<
+  OpenRange<T>
+> {
   constructor(readonly minimum: T) {
     super();
   }
@@ -23,6 +25,6 @@ export class OpenRange<T extends IComparable> extends Updatable<OpenRange<T>> {
   }
 }
 
-export function from<T extends IComparable>(minimum: T): OpenRange<T> {
+export function from<T extends IComparable = number>(minimum: T): OpenRange<T> {
   return new OpenRange(minimum);
 }

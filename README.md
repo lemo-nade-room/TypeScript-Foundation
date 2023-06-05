@@ -8,8 +8,16 @@ TypeScript Foundation Libraryです。
 ## 特長
 
 - SwiftのEquatableに似たEquatable型
+  - Equatableを継承すると等価比較可能になる
+- Clonable型
+  - Clonableを継承するとクローン可能になる
+- Codable型
+  - Codableを継承するとJSONシリアライズ可能になる
 - SwiftとScalaとJavaに似たOptional型
+  - 型安全なnullとundefinedのラッパー
+  - mapやflatMap等が使用可能
 - SwiftのResultとScalaのEitherに似たResult型
+  - mapやflatMap等が使用可能
 
 ## インストール
 
@@ -30,6 +38,8 @@ yarn add @lemonaderoom/foundation
 テストコードをご覧ください
 
 - [Equatable](src/equality/equatable.test.ts)
+- [Clonable](src/clone/clonable.test.ts)
+- [Codable](src/codable/codable.test.ts)
 - [Optional](src/optional/optional.test.ts)
   - [Some](src/optional/some.test.ts)
   - [None](src/optional/none.test.ts)

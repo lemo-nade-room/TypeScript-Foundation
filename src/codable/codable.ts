@@ -1,9 +1,9 @@
 import { IEncodable } from "./iEncodable";
 import { IDecodable, isDecodable } from "./iDecodable";
-import { Clonable } from "../clone/clonable";
+import { Updatable } from "../update/updatable";
 
 export class Codable<Self extends object>
-  extends Clonable<Self>
+  extends Updatable<Self>
   implements IEncodable, IDecodable<Self>
 {
   constructor() {
@@ -19,7 +19,7 @@ export class Codable<Self extends object>
       throw new Error(`decode object should be an object, but got ${json}`);
     }
     const object = json as Record<string, unknown>;
-    const clone = this.clone as Record<string, unknown>;
+    const clone = this.clone as unknown as Record<string, unknown>;
     for (const key in object) {
       if (!(key in clone)) continue;
       const property = clone[key];

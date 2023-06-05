@@ -10,3 +10,7 @@ export function isClonable(object: unknown): object is IClonable<unknown> {
     typeof object.clone === "object"
   );
 }
+
+export function clone<T>(value: T): T {
+  return isClonable(value) ? (value as IClonable<T>).clone : value;
+}

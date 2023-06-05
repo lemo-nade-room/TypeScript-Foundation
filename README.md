@@ -16,6 +16,7 @@ TypeScript Foundation Libraryです。
 - SwiftとScalaとJavaに似たOptional型
   - 型安全なnullとundefinedのラッパー
   - mapやflatMap等が使用可能
+  - Scalaのようなfor-yieldが可能
 - SwiftのResultとScalaのEitherに似たResult型
   - mapやflatMap等が使用可能
 
@@ -43,6 +44,7 @@ yarn add @lemonaderoom/foundation
 - [Optional](src/optional/optional.test.ts)
   - [Some](src/optional/some.test.ts)
   - [None](src/optional/none.test.ts)
+  - [for-yield](src/for/optional-for.test.ts)
 - [Result](src/result/result.test.ts)
   - [Success](src/result/success.test.ts)
   - [Failure](src/result/failure.test.ts)

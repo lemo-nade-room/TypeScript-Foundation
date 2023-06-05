@@ -8,7 +8,9 @@ export function assertEquals<T extends IEquatableObject<T>>(
 ): void {
   expect(
     actual.equals(expected),
-    `actual: ${String(actual)}, expected: ${String(expected)}`
+    `actual: \n${JSON.stringify(actual)}\nexpected: \n${JSON.stringify(
+      expected
+    )}\n`
   ).toBeTruthy();
 }
 

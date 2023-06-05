@@ -10,15 +10,23 @@ TypeScript Foundation Libraryです。
 - SwiftのEquatableに似たEquatable型
   - Equatableを継承すると等価比較可能になる
 - Clonable型
-  - Clonableを継承するとクローン可能になる
+  - Clonableを継承すると複製可能になる
 - Codable型
   - Codableを継承するとJSONシリアライズ可能になる
+- Comparable型
+  - 比較メソッドを持つinterface
 - SwiftとScalaとJavaに似たOptional型
   - 型安全なnullとundefinedのラッパー
   - mapやflatMap等が使用可能
   - Scalaのようなfor-yieldが可能
 - SwiftのResultとScalaのEitherに似たResult型
   - mapやflatMap等が使用可能
+- Range型
+  - 1...  のOpenRange
+  - 1..< 5のRange
+  - 1... 4のClosedRange
+- Updatable
+  - Scalaみたいにcopyメソッドが使える
 
 ## インストール
 
@@ -40,7 +48,10 @@ yarn add @lemonaderoom/foundation
 
 - [Equatable](src/equality/equatable.test.ts)
 - [Clonable](src/clone/clonable.test.ts)
+- [Updatable](src/update/updatable.test.ts)
 - [Codable](src/codable/codable.test.ts)
+- [Comparable](src/compare/iComparable.test.ts)
+- [Range](src/range/range.test.ts)
 - [Optional](src/optional/optional.test.ts)
   - [Some](src/optional/some.test.ts)
   - [None](src/optional/none.test.ts)
@@ -48,6 +59,7 @@ yarn add @lemonaderoom/foundation
 - [Result](src/result/result.test.ts)
   - [Success](src/result/success.test.ts)
   - [Failure](src/result/failure.test.ts)
+- [Sequence](src/sequence/sequence.test.ts)
 
 ## テストの実行
 
@@ -55,6 +67,21 @@ yarn add @lemonaderoom/foundation
 
 ```bash
 npm test
+```
+
+## 継承関係
+
+```mermaid
+classDiagram
+    Equatable <|-- Clonable
+    Clonable <|-- Updatable
+    Updatable <|-- Codable
+    Comparable : 
+    Clonable <|-- Optional
+    Updatable <|-- Range
+    Updatable <|-- Result
+    Clonable <|-- Sequence
+ 
 ```
 
 ## ライセンス

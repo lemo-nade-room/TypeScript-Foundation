@@ -1,4 +1,4 @@
-import { Clonable } from "../clone/clonable";
+import { Clonable } from "../clone";
 import { IUpdatable } from "./iUpdatable";
 
 export class Updatable<Self>

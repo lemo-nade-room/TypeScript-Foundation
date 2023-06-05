@@ -51,7 +51,7 @@ export class Some<T> implements Optional<T> {
     return right(this.value);
   }
 
-  unwrap(or: Error): T {
+  unwrap(_: Error): T {
     return this.value;
   }
 

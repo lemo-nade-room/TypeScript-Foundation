@@ -283,7 +283,20 @@ export class Sequence<T>
   }
 }
 
-export function seq<T>(array: readonly T[] | Sequence<T> = []): Sequence<T> {
-  if (array instanceof Sequence) return array.clone;
-  return new Sequence<T>(array);
+export function seq<T>(array: readonly T[] | Sequence<T>): Sequence<T>;
+export function seq<T>(...elements: readonly T[]): Sequence<T>;
+export function seq<T>(
+  ...elements: readonly T[] | readonly T[][] | readonly Sequence<T>[]
+): Sequence<T> {
+  if (elements.length === 1) {
+    if (Array.isArray(elements[0])) {
+      // array: readonly T[]
+      return new Sequence<T>(elements[0] as readonly T[]);
+    }
+    if (elements[0] instanceof Sequence) {
+      // sequence: Sequence<T>
+      return elements[0] as Sequence<T>;
+    }
+  }
+  return new Sequence<T>(elements as readonly T[]);
 }

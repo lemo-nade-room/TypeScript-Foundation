@@ -1,9 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { none } from "./none";
 import { some } from "./some";
-import { success } from "../result/success";
-import { failure } from "../result/failure";
-import { optional } from "./optional";
+import { failure } from "../result";
 
 describe("None Tests", () => {
   test("getでErrorを投げる", () => {

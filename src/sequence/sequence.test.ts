@@ -317,7 +317,7 @@ describe("Sequence Tests", () => {
   test("decodableに準拠", () => {
     const json = [{ value: 3 }, { value: 4 }, { value: 6 }];
     const expected = seq([new N(3), new N(4), new N(6)]);
-    const actual = seq([new N(0)]).decode(json);
+    const actual = seq(new N(0)).decode(json);
     expect(actual).toEqual(expected);
   });
 });

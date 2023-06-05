@@ -1,9 +1,6 @@
 {
   "name": "@lemonaderoom/foundation",
-  "version": "0.0.10",
-  "files": [
-    "dist/index.js"
-  ],
+  "version": "0.0.12",
   "description": "TypeScript Foundation Library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

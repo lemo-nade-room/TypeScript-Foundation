@@ -4,12 +4,15 @@ import { none, Optional, optional } from "../optional";
 import * as crypto from "crypto";
 import { ClosedRange, OpenRange, Range } from "../range";
 import { compare } from "../compare";
+import { encode, IDecodable, IEncodable, isDecodable } from "../codable";
 
 export class Sequence<T>
   implements
     IEquatableObject<Sequence<T>>,
     IClonable<Sequence<T>>,
-    IterableIterator<T>
+    IterableIterator<T>,
+    IEncodable,
+    IDecodable<Sequence<T>>
 {
   constructor(private readonly values: readonly T[]) {}
 
@@ -258,6 +261,25 @@ export class Sequence<T>
 
   next(): IteratorResult<T> {
     return this.values[Symbol.iterator]().next();
+  }
+
+  get encode(): unknown {
+    return this.values.map(encode);
+  }
+
+  decode(object: unknown): Sequence<T> {
+    if (this.isEmpty) {
+      throw new Error("empty sequence cannot decode");
+    }
+    if (!Array.isArray(object)) {
+      throw new Error("not array");
+    }
+    if (!isDecodable(this.get(0))) {
+      return seq(object as readonly T[]);
+    }
+    return seq(object).reduce(seq(), (result, element) => {
+      return result.append((this.get(0) as IDecodable<T>).decode(element));
+    });
   }
 }
 

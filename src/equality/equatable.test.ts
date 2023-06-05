@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { Equatable } from "./equatable";
-import { assertEquals, assertNotEquals } from "./assertion";
+import { assertEquals, assertNotEquals } from "./assertion.test";
 
 describe("equals Tests", () => {
   class E extends Equatable<E> {

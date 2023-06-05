@@ -1,5 +1,6 @@
-import { expect } from "vitest";
+import { expect, describe, test } from "vitest";
 import { IEquatableObject } from "./iEquatableObject";
+import { Equatable } from "./equatable";
 
 /** Equatableの値をassertする */
 export function assertEquals<T extends IEquatableObject<T>>(
@@ -24,3 +25,23 @@ export function assertNotEquals<T extends IEquatableObject<T>>(
     `should be not same object but actual: ${String(actual)}`
   ).toBeFalsy();
 }
+
+describe("Assertion Tests", function () {
+  class Equality extends Equatable<Equality> {
+    constructor(readonly value: string) {
+      super();
+    }
+  }
+
+  test("assertEquals", () => {
+    const actual = new Equality("hello");
+    const expected = new Equality("hello");
+    assertEquals(actual, expected);
+  });
+
+  test("true", () => {
+    const actual = { equals: () => true };
+    const expected = { equals: () => false };
+    assertEquals(actual, expected);
+  });
+});

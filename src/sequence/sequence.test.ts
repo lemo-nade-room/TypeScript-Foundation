@@ -4,6 +4,7 @@ import { assertEquals, Equatable } from "../equality";
 import { none, some } from "../optional";
 import { from } from "../range";
 import { Comparable } from "../compare";
+import { Codable } from "../codable";
 
 describe("Sequence Tests", () => {
   test("getで要素を取得できる", () => {
@@ -184,7 +185,7 @@ describe("Sequence Tests", () => {
     assertEquals(actual, expected);
   });
 
-  class N extends Equatable<N> implements Comparable<N> {
+  class N extends Codable<N> implements Comparable<N> {
     constructor(readonly value: number) {
       super();
     }
@@ -304,5 +305,19 @@ describe("Sequence Tests", () => {
     const expected = seq([1, 2, 3, 4, 5, 6]);
     const actual = sequence.concat(seq([4, 5, 6]));
     assertEquals(actual, expected);
+  });
+
+  test("encodableに準拠", () => {
+    const sequence = seq([1, 2, 3]);
+    const expected = [1, 2, 3];
+    const actual = sequence.encode;
+    expect(actual).toEqual(expected);
+  });
+
+  test("decodableに準拠", () => {
+    const json = [{ value: 3 }, { value: 4 }, { value: 6 }];
+    const expected = seq([new N(3), new N(4), new N(6)]);
+    const actual = seq([new N(0)]).decode(json);
+    expect(actual).toEqual(expected);
   });
 });

@@ -3,9 +3,8 @@ import { Result } from "../result";
 import { success } from "../result";
 import { equals } from "../equality";
 import { none, None } from "./none";
-import { isClonable } from "../clone/iClonable";
-import { isDecodable } from "../codable/iDecodable";
-import { isEncodable } from "../codable/iEncodable";
+import { isClonable } from "../clone";
+import { isDecodable, isEncodable } from "../codable";
 
 export class Some<T> implements Optional<T> {
   constructor(readonly value: T) {}

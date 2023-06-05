@@ -2,7 +2,7 @@ import { Optional } from "../optional";
 import { success } from "./success";
 import { failure } from "./failure";
 import { IEquatableObject } from "../equality";
-import { IClonable } from "../clone/iClonable";
+import { IClonable } from "../clone";
 
 export interface Result<T, E>
   extends IEquatableObject<Result<T, E>>,

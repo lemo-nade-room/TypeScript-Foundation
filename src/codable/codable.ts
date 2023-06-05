@@ -1,6 +1,6 @@
 import { IEncodable } from "./iEncodable";
 import { IDecodable, isDecodable } from "./iDecodable";
-import { Updatable } from "../update/updatable";
+import { Updatable } from "../update";
 
 export class Codable<Self extends object>
   extends Updatable<Self>

@@ -2,9 +2,9 @@ import { describe, test, expect } from "vitest";
 import { some } from "./some";
 import { none } from "./none";
 import { success } from "../result";
-import { assertEquals, Equatable } from "../equality";
-import { Clonable } from "../clone/clonable";
-import { Codable } from "../codable/codable";
+import { Equatable } from "../equality";
+import { Clonable } from "../clone";
+import { Codable } from "../codable";
 
 describe("Some Tests", () => {
   test("getで値を取り出せる", () => {

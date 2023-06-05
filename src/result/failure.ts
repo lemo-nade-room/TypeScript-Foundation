@@ -1,7 +1,7 @@
 import { Result } from "./result";
 import { none, None } from "../optional";
 import { equals } from "../equality";
-import { isClonable } from "../clone/iClonable";
+import { isClonable } from "../clone";
 
 export class Failure<T, E> implements Result<T, E> {
   constructor(private readonly error: E) {}

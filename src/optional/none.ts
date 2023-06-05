@@ -1,7 +1,6 @@
 import { Optional } from "./optional";
-import { Failure, failure } from "../result/failure";
-import { IEncodable } from "../codable/iEncodable";
-import { IDecodable } from "../codable/iDecodable";
+import { Failure, failure } from "../result";
+import { IEncodable, IDecodable } from "../codable";
 
 export class None<T>
   implements Optional<T>, IEncodable, IDecodable<Optional<T>>

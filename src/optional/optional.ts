@@ -2,9 +2,8 @@ import { none } from "./none";
 import { some } from "./some";
 import { Result } from "../result";
 import { IEquatableObject } from "../equality";
-import { IClonable } from "../clone/iClonable";
-import { IEncodable } from "../codable/iEncodable";
-import { IDecodable } from "../codable/iDecodable";
+import { IClonable } from "../clone";
+import { IEncodable, IDecodable } from "../codable";
 
 export interface Optional<T>
   extends IEquatableObject<Optional<T> | T>,

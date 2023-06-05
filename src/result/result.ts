@@ -2,8 +2,11 @@ import { Optional } from "../optional";
 import { success } from "./success";
 import { failure } from "./failure";
 import { IEquatableObject } from "../equality";
+import { IClonable } from "../clone/iClonable";
 
-export interface Result<T, E> extends IEquatableObject<Result<T, E>> {
+export interface Result<T, E>
+  extends IEquatableObject<Result<T, E>>,
+    IClonable<Result<T, E>> {
   /** successの場合、値を取得する。failureの場合、Errorを投げる。 */
   readonly get: T;
 

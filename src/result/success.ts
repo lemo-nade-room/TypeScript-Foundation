@@ -1,6 +1,7 @@
 import { Result } from "./result";
 import { some, Some } from "../optional";
 import { equals } from "../equality";
+import { isClonable } from "../clone/iClonable";
 
 export class Success<T, E> implements Result<T, E> {
   constructor(private readonly value: T) {}
@@ -47,6 +48,16 @@ export class Success<T, E> implements Result<T, E> {
 
   get toOptional(): Some<T> {
     return some(this.value);
+  }
+
+  get clone(): Result<T, E> {
+    if (isClonable(this.value)) {
+      return success(this.value.clone as T);
+    }
+    if (typeof this.value === "object") {
+      return success(Object.create(this.value) as T);
+    }
+    return success(this.value);
   }
 }
 

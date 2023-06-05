@@ -1,8 +1,11 @@
 import { Optional } from "./optional";
 import { Result } from "../result";
 import { success } from "../result";
-import { equals, IEquatable } from "../equality";
-import { None } from "./none";
+import { equals } from "../equality";
+import { none, None } from "./none";
+import { isClonable } from "../clone/iClonable";
+import { isDecodable } from "../codable/iDecodable";
+import { isEncodable } from "../codable/iEncodable";
 
 export class Some<T> implements Optional<T> {
   constructor(readonly value: T) {}
@@ -55,6 +58,31 @@ export class Some<T> implements Optional<T> {
 
   toResult<E>(_: E): Result<T, E> {
     return success(this.value);
+  }
+
+  get clone(): Some<T> {
+    if (isClonable(this.value)) {
+      return some(this.value.clone as T);
+    }
+    if (typeof this.value === "object") {
+      return some(Object.create(this.value));
+    }
+    return some(this.value);
+  }
+
+  get encode(): unknown {
+    if (isEncodable(this.value)) {
+      return this.value.encode;
+    }
+    return this.value;
+  }
+
+  decode(json: unknown): Optional<T> {
+    if (json == null) return none();
+    if (isDecodable(this.value)) {
+      return some(this.value.decode(json) as T);
+    }
+    return some(json as T);
   }
 }
 

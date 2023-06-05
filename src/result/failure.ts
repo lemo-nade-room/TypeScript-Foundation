@@ -1,6 +1,7 @@
 import { Result } from "./result";
 import { none, None } from "../optional";
 import { equals } from "../equality";
+import { isClonable } from "../clone/iClonable";
 
 export class Failure<T, E> implements Result<T, E> {
   constructor(private readonly error: E) {}
@@ -47,6 +48,16 @@ export class Failure<T, E> implements Result<T, E> {
 
   get toOptional(): None<T> {
     return none();
+  }
+
+  get clone(): Failure<T, E> {
+    if (isClonable(this.error)) {
+      return failure(this.error.clone as E);
+    }
+    if (typeof this.error === "object") {
+      return failure(Object.create(this.error) as E);
+    }
+    return failure(this.error);
   }
 }
 

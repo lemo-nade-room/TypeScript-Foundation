@@ -3,6 +3,7 @@ import { none } from "./none";
 import { some } from "./some";
 import { success } from "../result/success";
 import { failure } from "../result/failure";
+import { optional } from "./optional";
 
 describe("None Tests", () => {
   test("getでErrorを投げる", () => {
@@ -77,5 +78,14 @@ describe("None Tests", () => {
     expect(option.toResult(new Error("error"))).toEqual(
       failure(new Error("error"))
     );
+  });
+
+  test("decodeはnoneを返す", () => {
+    const option = none();
+    expect(option.decode({})).toEqual(none());
+  });
+
+  test("encodeするとnullを返す", () => {
+    expect(none().encode).toBeNull();
   });
 });

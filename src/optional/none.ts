@@ -1,7 +1,11 @@
 import { Optional } from "./optional";
 import { Failure, failure } from "../result/failure";
+import { IEncodable } from "../codable/iEncodable";
+import { IDecodable } from "../codable/iDecodable";
 
-export class None<T> implements Optional<T> {
+export class None<T>
+  implements Optional<T>, IEncodable, IDecodable<Optional<T>>
+{
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
@@ -12,6 +16,8 @@ export class None<T> implements Optional<T> {
   }
 
   readonly value: T | null = null;
+
+  readonly clone: None<T> = this;
 
   getOrElse(defaultValue: T): T {
     return defaultValue;
@@ -47,6 +53,14 @@ export class None<T> implements Optional<T> {
 
   toResult<E>(error: E): Failure<T, E> {
     return failure(error);
+  }
+
+  get encode(): unknown {
+    return null;
+  }
+
+  decode(object: unknown): Optional<T> {
+    return none();
   }
 }
 

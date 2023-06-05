@@ -14,11 +14,17 @@ export class Equatable<Self extends object> implements IEquatableObject<Self> {
     });
   }
 
-  get properties(): readonly IEquatable[] {
-    const properties: IEquatable[] = [];
+  get keys(): readonly string[] {
+    const keys: string[] = [];
     for (const key in this) {
-      properties.push(this[key] as IEquatable);
+      keys.push(key);
     }
-    return properties;
+    return keys;
+  }
+
+  get properties(): readonly IEquatable[] {
+    return this.keys.map(
+      (key) => (this as Record<string, unknown>)[key] as IEquatable
+    );
   }
 }

@@ -2,7 +2,9 @@ import { describe, test, expect } from "vitest";
 import { some } from "./some";
 import { none } from "./none";
 import { success } from "../result";
-import { Equatable } from "../equality";
+import { assertEquals, Equatable } from "../equality";
+import { Clonable } from "../clone/clonable";
+import { Codable } from "../codable/codable";
 
 describe("Some Tests", () => {
   test("getで値を取り出せる", () => {
@@ -115,5 +117,41 @@ describe("Some Tests", () => {
   test("toResultでsuccessに変換する", () => {
     const option = some(10);
     expect(option.toResult(new Error("error"))).toEqual(success(10));
+  });
+
+  test("cloneでvalueをcloneする", () => {
+    class C extends Clonable<C> {
+      constructor(public num: number) {
+        super();
+      }
+    }
+    const option = some(new C(10));
+    const clone = option.clone;
+    clone.value.num = 20;
+    expect(option.value.num).toBe(10);
+  });
+
+  class J extends Codable<J> {
+    constructor(readonly num: number) {
+      super();
+    }
+  }
+
+  test("optionalでdecodeする", () => {
+    const option = some(new J(0));
+    const actual = option.decode({ num: 100 });
+    expect(actual.value?.num).toBe(100);
+  });
+
+  test("nullをdecodeするとoptionalを返す", () => {
+    const option = some(new J(0));
+    const actual = option.decode(null);
+    expect(actual).toBe(none());
+  });
+
+  test("encodeするとvalueをencodeする", () => {
+    const option = some(new J(1000));
+    const actual = option.encode;
+    expect(actual).toEqual({ num: 1000 });
   });
 });

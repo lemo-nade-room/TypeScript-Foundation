@@ -2,8 +2,15 @@ import { none } from "./none";
 import { some } from "./some";
 import { Result } from "../result";
 import { IEquatableObject } from "../equality";
+import { IClonable } from "../clone/iClonable";
+import { IEncodable } from "../codable/iEncodable";
+import { IDecodable } from "../codable/iDecodable";
 
-export interface Optional<T> extends IEquatableObject<Optional<T> | T> {
+export interface Optional<T>
+  extends IEquatableObject<Optional<T> | T>,
+    IClonable<Optional<T>>,
+    IEncodable,
+    IDecodable<Optional<T>> {
   /** 値が存在しない場合はErrorを投げる */
   get get(): T;
 

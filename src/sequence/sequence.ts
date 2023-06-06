@@ -255,6 +255,13 @@ export class Sequence<T>
     return this.values.length;
   }
 
+  get distinct(): Sequence<T> {
+    return this.reduce(seq(), (result, element) => {
+      if (result.contains(element)) return result;
+      return result.append(element);
+    });
+  }
+
   [Symbol.iterator](): IterableIterator<T> {
     return this.values[Symbol.iterator]();
   }
@@ -280,6 +287,10 @@ export class Sequence<T>
     return seq(object).reduce(seq(), (result, element) => {
       return result.append((this.get(0) as IDecodable<T>).decode(element));
     });
+  }
+
+  get toArray(): readonly T[] {
+    return this.values;
   }
 }
 

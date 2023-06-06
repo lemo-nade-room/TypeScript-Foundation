@@ -81,6 +81,7 @@ classDiagram
     Clonable <|-- Result
     Updatable <|-- Range
     Clonable <|-- Sequence
+    Clonable <|-- Set
  
 ```
 

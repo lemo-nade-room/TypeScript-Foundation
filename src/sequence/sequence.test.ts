@@ -320,4 +320,11 @@ describe("Sequence Tests", () => {
     const actual = seq(new N(0)).decode(json);
     expect(actual).toEqual(expected);
   });
+
+  test("distinctで重複を排除できる", () => {
+    const sequence = seq([1, 2, 3, 2, 3, 4, 5]);
+    const expected = seq([1, 2, 3, 4, 5]);
+    const actual = sequence.distinct;
+    expect(actual).toEqual(expected);
+  });
 });

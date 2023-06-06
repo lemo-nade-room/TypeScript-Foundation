@@ -5,6 +5,7 @@ import { success } from "../result";
 import { Equatable } from "../equality";
 import { Clonable } from "../clone";
 import { Codable } from "../codable";
+import { optional } from "./optional";
 
 describe("Some Tests", () => {
   test("getで値を取り出せる", () => {
@@ -153,5 +154,14 @@ describe("Some Tests", () => {
     const option = some(new J(1000));
     const actual = option.encode;
     expect(actual).toEqual({ num: 1000 });
+  });
+
+  test("要素で比較できる", () => {
+    expect(some(3).compare(some(5))).toBeTruthy();
+    expect(some(5).compare(some(3))).toBeFalsy();
+  });
+
+  test("noneと比較するとtrueを返す", () => {
+    expect(some(3).compare(optional<number>(null))).toBeTruthy();
   });
 });

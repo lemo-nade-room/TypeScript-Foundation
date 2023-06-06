@@ -1,13 +1,15 @@
 import { none } from "./none";
-import { some } from "./some";
+import { Some, some } from "./some";
 import { Result } from "../result";
 import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
 import { IEncodable, IDecodable } from "../codable";
+import { Comparable } from "../compare";
 
 export interface Optional<T>
   extends IEquatableObject<Optional<T> | T>,
     IClonable<Optional<T>>,
+    Comparable<Optional<T>>,
     IEncodable,
     IDecodable<Optional<T>> {
   /** 値が存在しない場合はErrorを投げる */
@@ -47,4 +49,11 @@ export interface Optional<T>
 export function optional<T>(value: T | null | undefined): Optional<T> {
   if (value == null) return none();
   return some(value);
+}
+
+export function isOptional<T>(value: unknown): value is Optional<T> {
+  if (typeof value !== "object") return false;
+  if (value == null) return false;
+  if (value === none()) return true;
+  return value instanceof Some;
 }

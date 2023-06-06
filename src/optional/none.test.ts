@@ -86,4 +86,13 @@ describe("None Tests", () => {
   test("encodeするとnullを返す", () => {
     expect(none().encode).toBeNull();
   });
+
+  test("encodeするとnullを返す", () => {
+    expect(none().encode).toBeNull();
+  });
+
+  test("compareはtrueを返す", () => {
+    const option = none();
+    expect(option.compare(none())).toBeTruthy();
+  });
 });

@@ -4,6 +4,7 @@ import { success } from "../result";
 import { equals } from "../equality";
 import { none, None } from "./none";
 import { isClonable } from "../clone";
+import { compare } from "../compare";
 import { isDecodable, isEncodable } from "../codable";
 
 export class Some<T> implements Optional<T> {
@@ -82,6 +83,10 @@ export class Some<T> implements Optional<T> {
       return some(this.value.decode(json) as T);
     }
     return some(json as T);
+  }
+
+  compare(compared: Optional<T>): boolean {
+    return compared.map((value) => compare(this.value, value)).getOrElse(true);
   }
 }
 

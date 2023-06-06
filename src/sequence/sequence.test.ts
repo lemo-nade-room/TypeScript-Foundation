@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { seq } from "./sequence";
 import { assertEquals } from "../equality/assertion.test";
-import { none, some } from "../optional";
+import { none, Optional, some } from "../optional";
 import { from } from "../range";
 import { Comparable } from "../compare";
 import { Codable } from "../codable";
@@ -133,6 +133,13 @@ describe("Sequence Tests", () => {
     assertEquals(actual, expected);
   });
 
+  test("compactMapでnone値を除外して変換できる", () => {
+    const sequence = seq<Optional<number>>(some(1), some(2), none(), some(4));
+    const expected = seq(3, 6, 12);
+    const actual = sequence.compactMap<number, number>((n) => n * 3);
+    assertEquals(actual, expected);
+  });
+
   test("filter", () => {
     const sequence = seq([1, 2, 3]);
     const expected = seq([1, 3]);
@@ -227,7 +234,7 @@ describe("Sequence Tests", () => {
     assertEquals(actual, expected);
   });
 
-  test("findをで検索できる", () => {
+  test("findで検索できる", () => {
     const sequence = seq([1, 2, 3]);
     const expected = some(2);
     const actual = sequence.find((n) => n === 2);

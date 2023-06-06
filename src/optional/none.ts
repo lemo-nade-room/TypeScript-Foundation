@@ -61,6 +61,10 @@ export class None<T>
   decode(object: unknown): Optional<T> {
     return none();
   }
+
+  compare(_: Optional<T>): boolean {
+    return true;
+  }
 }
 
 export function none<T>(): None<T> {

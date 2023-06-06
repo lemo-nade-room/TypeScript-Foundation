@@ -1,6 +1,6 @@
 import { IEquatableObject, equals } from "../equality";
 import { clone, IClonable } from "../clone";
-import { none, Optional, optional } from "../optional";
+import { isOptional, none, Optional, optional } from "../optional";
 import * as crypto from "crypto";
 import { ClosedRange, OpenRange, Range } from "../range";
 import { compare } from "../compare";
@@ -80,13 +80,28 @@ export class Sequence<T>
   }
 
   /** 要素をフラットに変換する */
-  flatMap<U>(f: (value: T) => Sequence<U>): Sequence<U> {
-    return new Sequence(this.values.flatMap((value) => f(value).values));
+  flatMap<U>(
+    f: (value: T, index: number, sequence: Sequence<T>) => Sequence<U>
+  ): Sequence<U> {
+    return new Sequence(
+      this.values.flatMap((v, i, arr) => f(v, i, seq(arr)).toArray)
+    );
+  }
+
+  /** unwrapしてsomeのみでmapを行う */
+  compactMap<Option, TO>(
+    f: (value: Option, index: number, sequence: Sequence<Option>) => TO
+  ): Sequence<TO> {
+    return this.filter((option) => isOptional<TO>(option) && option.isDefined)
+      .map((option) => (option as Optional<Option>).get)
+      .map((v, i, sequence) => f(v, i, sequence));
   }
 
   /** 要素をフィルタリングする */
-  filter(f: (value: T) => boolean): Sequence<T> {
-    return new Sequence(this.values.filter(f));
+  filter(
+    f: (value: T, index: number, sequence: Sequence<T>) => boolean
+  ): Sequence<T> {
+    return new Sequence(this.values.filter((v, i, arr) => f(v, i, seq(arr))));
   }
 
   /** 連結する */

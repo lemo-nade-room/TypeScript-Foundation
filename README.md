@@ -27,6 +27,10 @@ TypeScript Foundation Libraryです。
   - 1... 4のClosedRange
 - Updatable
   - Scalaみたいにcopyメソッドが使える
+- Sequence
+  - ScalaやSwiftっぽい配列Wrapper
+- Set
+  - ScalaやSwiftっぽいSetWrapper
 
 ## インストール
 
@@ -60,6 +64,7 @@ yarn add @lemonaderoom/foundation
   - [Success](src/result/success.test.ts)
   - [Failure](src/result/failure.test.ts)
 - [Sequence](src/sequence/sequence.test.ts)
+- [Set](src/set/set.test.ts)
 
 ## テストの実行
 

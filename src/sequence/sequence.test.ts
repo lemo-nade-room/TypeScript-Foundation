@@ -334,4 +334,11 @@ describe("Sequence Tests", () => {
     const actual = sequence.distinct;
     expect(actual).toEqual(expected);
   });
+
+  test("swapで入れ替えられる", () => {
+    const sequence = seq([1, 2, 3, 4, 5]);
+    const expected = seq([1, 4, 3, 2, 5]);
+    const actual = sequence.swap(1, 3);
+    expect(actual).toEqual(expected);
+  });
 });

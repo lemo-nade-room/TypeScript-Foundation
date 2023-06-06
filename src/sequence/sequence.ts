@@ -189,6 +189,15 @@ export class Sequence<T>
     return result;
   }
 
+  /** 入れ替えられる */
+  swap(a: number, b: number): Sequence<T> {
+    const values = this.values.slice();
+    const temp = values[a];
+    values[a] = values[b];
+    values[b] = temp;
+    return new Sequence(values);
+  }
+
   /** 範囲の要素を置き換える */
   replaceSubrange(
     subrange: Range<number> | ClosedRange<number> | OpenRange<number>,

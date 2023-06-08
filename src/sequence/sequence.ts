@@ -1,7 +1,6 @@
 import { IEquatableObject, equals } from "../equality";
 import { clone, IClonable } from "../clone";
 import { isOptional, none, Optional, optional } from "../optional";
-import * as crypto from "crypto";
 import { ClosedRange, OpenRange, Range } from "../range";
 import { compare } from "../compare";
 import { encode, IDecodable, IEncodable, isDecodable } from "../codable";
@@ -260,7 +259,7 @@ export class Sequence<T>
   /** ランダムな要素を取得する。cryptoを使用 */
   randomElement(): Optional<T> {
     if (this.isEmpty) return none();
-    return this.at(crypto.randomInt(this.count));
+    return this.at(Math.floor((Math.random() * 100000) % this.count));
   }
 
   equals(other: Sequence<T>): boolean {

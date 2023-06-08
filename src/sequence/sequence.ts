@@ -2,7 +2,7 @@ import { IEquatableObject, equals } from "../equality";
 import { clone, IClonable } from "../clone";
 import { isOptional, none, Optional, optional } from "../optional";
 import { ClosedRange, OpenRange, Range } from "../range";
-import { compare } from "../compare";
+import { compare, compareTo } from "../compare";
 import { encode, IDecodable, IEncodable, isDecodable } from "../codable";
 
 export class Sequence<T>
@@ -126,9 +126,9 @@ export class Sequence<T>
   sorted(sorter?: (a: T, b: T) => boolean): Sequence<T> {
     const result = this.clone.values.slice().sort((a, b) => {
       if (sorter == null) {
-        if (equals(a, b)) return 0;
-        return compare(a, b) ? -1 : 1;
+        return compareTo(a, b);
       }
+      if (equals(a, b)) return 0;
       return sorter(a, b) ? -1 : 1;
     });
     return new Sequence(result);

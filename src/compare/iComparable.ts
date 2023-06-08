@@ -1,4 +1,4 @@
-import { IEquatableObject } from "../equality";
+import { equals, IEquatableObject } from "../equality";
 
 export interface Comparable<Self> extends IEquatableObject<Self> {
   compare(compared: Self): boolean;
@@ -32,4 +32,9 @@ export function compare<T>(a: T, b: T): boolean {
     return a.compare(b);
   }
   return a < b;
+}
+
+export function compareTo<T>(a: T, b: T): number {
+  if (equals(a, b)) return 0;
+  return compare(a, b) ? -1 : 1;
 }

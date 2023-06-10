@@ -5,9 +5,11 @@ import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
 import { IEncodable, IDecodable } from "../codable";
 import { Comparable } from "../compare";
+import { IHashableObject } from "../hash";
 
 export interface Optional<T>
   extends IEquatableObject<Optional<T> | T>,
+    IHashableObject<Optional<T>>,
     IClonable<Optional<T>>,
     Comparable<Optional<T>>,
     IEncodable,

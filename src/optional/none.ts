@@ -1,6 +1,7 @@
 import { Optional } from "./optional";
 import { Failure, failure } from "../result";
 import { IEncodable, IDecodable } from "../codable";
+import { Md5 } from "ts-md5";
 
 export class None<T>
   implements Optional<T>, IEncodable, IDecodable<Optional<T>>
@@ -64,6 +65,10 @@ export class None<T>
 
   compare(_: Optional<T>): boolean {
     return true;
+  }
+
+  get hashValue(): string {
+    return Md5.hashStr("none");
   }
 }
 

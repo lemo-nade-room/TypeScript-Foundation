@@ -1,7 +1,7 @@
-import { Equatable } from "../equality";
 import { isClonable } from "./iClonable";
+import { Hashable } from "../hash";
 
-export class Clonable<Self extends object> extends Equatable<Self> {
+export class Clonable<Self extends object> extends Hashable<Self> {
   constructor() {
     super();
   }

@@ -6,6 +6,8 @@ import { none, None } from "./none";
 import { isClonable } from "../clone";
 import { compare } from "../compare";
 import { isDecodable, isEncodable } from "../codable";
+import { Md5 } from "ts-md5";
+import { hash } from "../hash";
 
 export class Some<T> implements Optional<T> {
   constructor(readonly value: T) {}
@@ -87,6 +89,10 @@ export class Some<T> implements Optional<T> {
 
   compare(compared: Optional<T>): boolean {
     return compared.map((value) => compare(this.value, value)).getOrElse(true);
+  }
+
+  get hashValue(): string {
+    return Md5.hashStr("some" + hash(this.value));
   }
 }
 

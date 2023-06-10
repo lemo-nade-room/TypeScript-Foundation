@@ -3,9 +3,9 @@ import { IDecodable, IEncodable } from "../codable";
 import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
-import { IComparable } from "../compare";
+import { hash, IHashable } from "../hash";
 
-export class Set<Element extends IEquatable & IComparable>
+export class Set<Element extends IHashable>
   implements
     IEquatableObject<Set<Element>>,
     IClonable<Set<Element>>,
@@ -16,7 +16,7 @@ export class Set<Element extends IEquatable & IComparable>
   private readonly seq: Sequence<Element>;
 
   constructor(seq: Sequence<Element>) {
-    this.seq = seq.distinct.sorted();
+    this.seq = seq.distinct.sorted((a, b) => hash(a) < hash(b));
   }
 
   /** 引数と集合の要素の積集合を返す */
@@ -74,21 +74,21 @@ export class Set<Element extends IEquatable & IComparable>
     return new Set(this.seq.append(element));
   }
 
-  map<U extends IEquatable & IComparable>(
+  map<U extends IEquatable & IHashable>(
     f: (v: Element, i: number, set: Set<Element>) => U
   ): Set<U> {
     return new Set(this.seq.map((v, i, seq) => f(v, i, set(seq))));
   }
 
-  flatMap<U extends IEquatable & IComparable>(
+  flatMap<U extends IEquatable & IHashable>(
     f: (v: Element, i: number, set: Set<Element>) => Set<U>
   ): Set<U> {
     return set(this.seq.flatMap((v, i, seq) => f(v, i, set(seq)).toSeq));
   }
 
   compactMap<
-    OPTION extends IComparable & IEquatable,
-    TO extends IEquatable & IComparable
+    OPTION extends IHashable & IEquatable,
+    TO extends IEquatable & IHashable
   >(f: (v: OPTION, i: number, set: Set<OPTION>) => TO): Set<TO> {
     return set(
       this.seq.compactMap<OPTION, TO>((v, i, seq) => f(v, i, set(seq)))
@@ -159,14 +159,14 @@ export class Set<Element extends IEquatable & IComparable>
   }
 }
 
-export function set<Element extends IEquatable & IComparable>(
+export function set<Element extends IEquatable & IHashable>(
   sequence: readonly Element[] | Sequence<Element> | Set<Element>
 ): Set<Element>;
-export function set<Element extends IEquatable & IComparable>(
+export function set<Element extends IEquatable & IHashable>(
   ...elements: readonly Element[]
 ): Set<Element>;
-export function set<Element extends IEquatable & IComparable>(): Set<Element>;
-export function set<Element extends IEquatable & IComparable>(
+export function set<Element extends IEquatable & IHashable>(): Set<Element>;
+export function set<Element extends IEquatable & IHashable>(
   ...elements:
     | readonly Element[][]
     | readonly Sequence<Element>[]

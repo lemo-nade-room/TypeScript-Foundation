@@ -167,7 +167,7 @@ describe("Set Tests", () => {
 
   test("encodableに準拠", () => {
     const sequence = set([1, 2, 3]);
-    const expected = [1, 2, 3];
+    const expected = [1, 3, 2];
     const actual = sequence.encode;
     expect(actual).toEqual(expected);
   });

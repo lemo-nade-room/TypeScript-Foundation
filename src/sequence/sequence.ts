@@ -125,13 +125,17 @@ export class Sequence<T>
   }
 
   /** ソートする。元のSequenceに影響はない */
-  sorted(sorter?: (a: T, b: T) => boolean): Sequence<T> {
+  sorted(
+    sorter?: ((a: T, b: T) => boolean) | ((a: T, b: T) => number)
+  ): Sequence<T> {
     const result = this.clone.values.slice().sort((a, b) => {
       if (sorter == null) {
         return compareTo(a, b);
       }
       if (equals(a, b)) return 0;
-      return sorter(a, b) ? -1 : 1;
+      const result = sorter(a, b);
+      if (typeof result === "boolean") return result ? -1 : 1;
+      return result;
     });
     return new Sequence(result);
   }

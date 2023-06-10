@@ -11,6 +11,7 @@ import {
   isDecodable,
 } from "../codable";
 import { clone, IClonable } from "../clone";
+import { k } from "vitest/dist/types-dea83b3d";
 
 export type DictionaryKey = IHashable & IEquatable;
 
@@ -55,11 +56,39 @@ export class Dictionary<K extends DictionaryKey, V>
   }
 
   equals(other: Dictionary<K, V>): boolean {
-    return this.allKvSeq.equals(other.allKvSeq);
+    return this.allKvSet.equals(other.allKvSet);
   }
 
   get hashValue(): string {
-    return hash("dict" + this.allKvSeq.hashValue);
+    return hash("dict" + this.allKvSet.hashValue);
+  }
+
+  map<NK extends IEquatable & IHashable, NU>(
+    f: (key: K, value: V) => [NK, NU]
+  ) {
+    const result = this.allKvSeq.map((kv) => f(kv.key, kv.value));
+    let next = dict<NK, NU>();
+    for (const [key, value] of result) {
+      next = next.put(key, value);
+    }
+    return next;
+  }
+
+  filter(f: (key: K, value: V) => boolean): Dictionary<K, V> {
+    const result = this.allKvSeq.filter((kv) => f(kv.key, kv.value));
+    let next = dict<K, V>();
+    for (const kv of result) {
+      next = next.put(kv.key, kv.value);
+    }
+    return next;
+  }
+
+  every(f: (key: K, value: V) => boolean): boolean {
+    return this.allKvSeq.every((kv) => f(kv.key, kv.value));
+  }
+
+  some(f: (key: K, value: V) => boolean): boolean {
+    return this.allKvSeq.some((kv) => f(kv.key, kv.value));
   }
 
   get encode(): Record<string | number, unknown> {
@@ -120,6 +149,26 @@ export class Dictionary<K extends DictionaryKey, V>
 
   get count(): number {
     return this.allKvSeq.count;
+  }
+
+  get keys(): Sequence<K> {
+    return this.allKvSeq.map((kv) => kv.key);
+  }
+
+  get values(): Sequence<V> {
+    return this.allKvSeq.map((kv) => kv.value);
+  }
+
+  [Symbol.iterator](): IterableIterator<[K, V]> {
+    return this.allKvArrays[Symbol.iterator]();
+  }
+
+  private get allKvSet(): Set<KV<K, V>> {
+    return set(this.allKvSeq);
+  }
+
+  private get allKvArrays(): readonly [K, V][] {
+    return this.allKvSeq.map((kv) => [kv.key, kv.value] as [K, V]).toArray;
   }
 
   private get allKvSeq(): Sequence<KV<K, V>> {

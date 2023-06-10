@@ -4,6 +4,7 @@ import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
 import { hash, IHashable, IHashableObject } from "../hash";
+import { compare, compareTo } from "../compare";
 
 export class Set<Element extends IHashable>
   implements
@@ -17,7 +18,13 @@ export class Set<Element extends IHashable>
   private readonly seq: Sequence<Element>;
 
   constructor(seq: Sequence<Element>) {
-    this.seq = seq.distinct.sorted((a, b) => hash(a) < hash(b));
+    this.seq = seq.distinct.sorted((a, b) => {
+      if (equals(a, b)) return 0;
+      const hashA = hash(a);
+      const hashB = hash(b);
+      if (hashA === hashB) return compareTo(a, b);
+      return hash(a) < hash(b) ? -1 : 1;
+    });
   }
 
   /** 引数と集合の要素の積集合を返す */

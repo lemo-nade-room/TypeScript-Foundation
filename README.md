@@ -31,6 +31,8 @@ TypeScript Foundation Libraryです。
   - ScalaやSwiftっぽい配列Wrapper
 - Set
   - ScalaやSwiftっぽいSetWrapper
+- Dictionary
+  - ScalaやSwiftっぽいMapWrapper
 
 ## インストール
 

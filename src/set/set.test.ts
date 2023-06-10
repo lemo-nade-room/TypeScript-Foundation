@@ -5,6 +5,7 @@ import { assertEquals } from "../equality/assertion.test";
 import { Codable } from "../codable";
 import { Comparable } from "../compare";
 import { none, Optional, some } from "../optional";
+import { Hashable } from "../hash";
 
 describe("Set Tests", () => {
   test("Iterable", () => {
@@ -47,6 +48,21 @@ describe("Set Tests", () => {
     const s = set<number>([1, 2, 3]);
     const expected = set([1, 2, 3, 4]);
     const actual = s.insert(4);
+    assertEquals(actual, expected);
+  });
+
+  test("既存の値をinsertすると上書きされる", () => {
+    class E extends Hashable<E> {
+      constructor(readonly key: string, readonly value: number) {
+        super();
+      }
+      get properties() {
+        return [this.key];
+      }
+    }
+    const s = set([new E("a", 1), new E("b", 2)]);
+    const expected = set([new E("a", 1), new E("b", 3)]);
+    const actual = s.insert(new E("b", 3));
     assertEquals(actual, expected);
   });
 

@@ -1,4 +1,4 @@
-import { IEquatableObject, IEquatable } from "../equality";
+import { IEquatableObject, IEquatable, equals } from "../equality";
 import { IDecodable, IEncodable } from "../codable";
 import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
@@ -72,7 +72,9 @@ export class Set<Element extends IHashable>
 
   /** 集合に加える */
   insert(element: Element): Set<Element> {
-    return new Set(this.seq.append(element));
+    return new Set(
+      this.seq.filter((el) => !equals(el, element)).append(element)
+    );
   }
 
   map<U extends IEquatable & IHashable>(

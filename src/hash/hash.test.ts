@@ -1,5 +1,4 @@
 import { describe, test, expect } from "vitest";
-import { Hashable } from "./hashable";
 import { hash } from "./hash";
 
 describe("hashable tests", () => {

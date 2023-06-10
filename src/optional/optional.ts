@@ -1,4 +1,4 @@
-import { none } from "./none";
+import { None, none } from "./none";
 import { Some, some } from "./some";
 import { Result } from "../result";
 import { IEquatableObject } from "../equality";
@@ -48,8 +48,10 @@ export interface Optional<T>
   toResult<E>(err: E): Result<T, E>;
 }
 
-export function optional<T>(value: T | null | undefined): Optional<T> {
-  if (value == null) return none();
+export function optional<T>(
+  value: T | null | undefined | None<T>
+): Optional<T> {
+  if (value == null || value instanceof None) return none();
   return some(value);
 }
 

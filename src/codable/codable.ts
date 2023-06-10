@@ -1,5 +1,5 @@
 import { IEncodable } from "./iEncodable";
-import { IDecodable, isDecodable } from "./iDecodable";
+import { decode, IDecodable } from "./iDecodable";
 import { Updatable } from "../update";
 
 export class Codable<Self extends object>
@@ -22,24 +22,7 @@ export class Codable<Self extends object>
     const clone = this.clone as unknown as Record<string, unknown>;
     for (const key in object) {
       if (!(key in clone)) continue;
-      const property = clone[key];
-      if (typeof property !== "object" || property == null) {
-        clone[key] = object[key];
-        continue;
-      }
-      if (isDecodable(property)) {
-        clone[key] = property.decode(object[key]);
-        continue;
-      }
-      if (!Array.isArray(property)) continue;
-      if (property.length === 0 || !isDecodable(property[0])) {
-        clone[key] = object[key];
-        continue;
-      }
-      if (!Array.isArray(object[key])) continue;
-      clone[key] = (object[key] as Array<unknown>).map((value) => {
-        return property[0].decode(value);
-      });
+      clone[key] = decode(object[key], clone[key] as any);
     }
     return clone as Self;
   }

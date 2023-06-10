@@ -26,7 +26,7 @@ describe("Codable Tests", () => {
   }
 
   test("jsonに変換できる", () => {
-    const origin = new C(new A("default", 0), [new B("default")], []);
+    const origin = new C(new A("default", 0), [new B("default")], [1]);
     const json = {
       a: {
         name: "hello",

@@ -11,7 +11,6 @@ import {
   isDecodable,
 } from "../codable";
 import { clone, IClonable } from "../clone";
-import { k } from "vitest/dist/types-dea83b3d";
 
 export type DictionaryKey = IHashable & IEquatable;
 

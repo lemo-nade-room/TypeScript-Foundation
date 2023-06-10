@@ -4,7 +4,7 @@ import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
 import { hash, IHashable, IHashableObject } from "../hash";
-import { compare, compareTo } from "../compare";
+import { compareTo } from "../compare";
 
 export class Set<Element extends IHashable>
   implements

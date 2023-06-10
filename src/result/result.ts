@@ -40,7 +40,7 @@ export interface Result<T, E>
   ): boolean;
 }
 
-export function result<T, E = Error>(cb: () => T): Result<T, E> {
+export function resultBuilder<T, E = Error>(cb: () => T): Result<T, E> {
   try {
     return success(cb());
   } catch (e) {
@@ -48,7 +48,7 @@ export function result<T, E = Error>(cb: () => T): Result<T, E> {
   }
 }
 
-export async function asyncResult<T, E = Error>(
+export async function asyncResultBuilder<T, E = Error>(
   cb: () => Promise<T>
 ): Promise<Result<T, E>> {
   try {

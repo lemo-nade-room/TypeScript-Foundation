@@ -3,13 +3,14 @@ import { IDecodable, IEncodable } from "../codable";
 import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
-import { hash, IHashable } from "../hash";
+import { hash, IHashable, IHashableObject } from "../hash";
 
 export class Set<Element extends IHashable>
   implements
     IEquatableObject<Set<Element>>,
     IClonable<Set<Element>>,
     IEncodable,
+    IHashableObject<Set<Element>>,
     IDecodable<Set<Element>>,
     IterableIterator<Element>
 {
@@ -156,6 +157,10 @@ export class Set<Element extends IHashable>
 
   equals(other: Set<Element>): boolean {
     return this.seq.equals(other.seq);
+  }
+
+  get hashValue(): string {
+    return this.seq.hashValue;
   }
 }
 

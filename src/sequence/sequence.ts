@@ -2,12 +2,14 @@ import { IEquatableObject, equals } from "../equality";
 import { clone, IClonable } from "../clone";
 import { isOptional, none, Optional, optional } from "../optional";
 import { ClosedRange, OpenRange, Range } from "../range";
-import { compare, compareTo } from "../compare";
+import { compareTo } from "../compare";
 import { encode, IDecodable, IEncodable, isDecodable } from "../codable";
+import { hash, IHashableObject } from "../hash";
 
 export class Sequence<T>
   implements
     IEquatableObject<Sequence<T>>,
+    IHashableObject<Sequence<T>>,
     IClonable<Sequence<T>>,
     IterableIterator<T>,
     IEncodable,
@@ -310,6 +312,10 @@ export class Sequence<T>
     return seq(object).reduce(seq(), (result, element) => {
       return result.append((this.get(0) as IDecodable<T>).decode(element));
     });
+  }
+
+  get hashValue(): string {
+    return hash(this.values);
   }
 
   get toArray(): readonly T[] {

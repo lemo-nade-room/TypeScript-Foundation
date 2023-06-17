@@ -6,6 +6,8 @@ export * from "./equality";
 export * from "./for";
 export * from "./hash";
 export * from "./optional";
+export * from "./range";
 export * from "./result";
 export * from "./sequence";
+export * from "./set";
 export * from "./update";

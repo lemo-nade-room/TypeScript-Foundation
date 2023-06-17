@@ -12,3 +12,4 @@ export * from "./result";
 export * from "./sequence";
 export * from "./set";
 export * from "./update";
+export * from "./websocket";

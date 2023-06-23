@@ -26,6 +26,9 @@ export function decode<
   if (json == null && origin == null) {
     return origin;
   }
+  if (isDecodable<T>(origin)) {
+    return origin.decode(json);
+  }
   if (typeof json !== typeof origin) {
     throw new Error(
       `Decode Type Error! expected ${typeof json} but got ${origin} of ${typeof origin}`
@@ -33,9 +36,6 @@ export function decode<
   }
   if (typeof json !== "object") {
     return json as T;
-  }
-  if (isDecodable<T>(origin)) {
-    return origin.decode(json);
   }
   if (Array.isArray(origin)) {
     if (!Array.isArray(json)) {

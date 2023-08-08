@@ -26,6 +26,9 @@ export function decode<
   if (json == null && origin == null) {
     return origin;
   }
+  if (origin instanceof Date && typeof json === "string") {
+    return new Date(json) as unknown as T;
+  }
   if (isDecodable<T>(origin)) {
     return origin.decode(json);
   }

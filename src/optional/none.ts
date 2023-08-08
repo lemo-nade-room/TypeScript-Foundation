@@ -1,5 +1,5 @@
 import { Optional } from "./optional";
-import { Failure, failure } from "../result";
+import { Failure, failure } from "../";
 import { IEncodable, IDecodable } from "../codable";
 import { Md5 } from "ts-md5";
 
@@ -32,11 +32,11 @@ export class None<T>
   readonly isEmpty = true;
 
   map<U>(f: (value: T) => U): Optional<U> {
-    return none();
+    return none<U>();
   }
 
   flatMap<U>(f: (value: T) => Optional<U>): Optional<U> {
-    return none();
+    return none<U>();
   }
 
   equals(compared: Optional<T> | T, _?: (a: T, b: T) => boolean): boolean {
@@ -51,7 +51,7 @@ export class None<T>
     throw or;
   }
 
-  toResult<E>(error: E): Failure<T, E> {
+  toEither<E>(error: E): Failure<E, T> {
     return failure(error);
   }
 
@@ -59,8 +59,8 @@ export class None<T>
     return null;
   }
 
-  decode(object: unknown): Optional<T> {
-    return none();
+  decode(_: unknown): Optional<T> {
+    return none<T>();
   }
 
   compare(_: Optional<T>): boolean {

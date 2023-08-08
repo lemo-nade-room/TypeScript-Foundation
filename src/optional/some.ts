@@ -1,6 +1,6 @@
 import { Optional } from "./optional";
-import { Result } from "../result";
-import { success } from "../result";
+import { Either } from "../";
+import { success } from "../";
 import { equals } from "../equality";
 import { none, None } from "./none";
 import { isClonable } from "../clone";
@@ -58,7 +58,7 @@ export class Some<T> implements Optional<T> {
     return this.value;
   }
 
-  toResult<E>(_: E): Result<T, E> {
+  toEither<E>(_: E): Either<E, T> {
     return success(this.value);
   }
 

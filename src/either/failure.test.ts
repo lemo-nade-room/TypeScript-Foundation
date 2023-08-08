@@ -5,63 +5,63 @@ import { Equatable } from "../equality";
 
 describe("Failure Tests", () => {
   test("getでthrowされる", () => {
-    const result = failure(new Error("error"));
-    expect(() => result.get).toThrowError("failure to get");
+    const either = failure(new Error("error"));
+    expect(() => either.get).toThrowError("failure to get");
   });
 
   test("getErrorで値を返す", () => {
-    const result = failure(new Error("error"));
-    expect(result.getError).toEqual(new Error("error"));
+    const either = failure(new Error("error"));
+    expect(either.getError).toEqual(new Error("error"));
   });
 
   test("mapで何も起こらない", () => {
-    const result = failure<number, Error>(new Error("error"));
-    const expected = failure<string, Error>(new Error("error"));
-    const actual = result.map((n) => `${n}番`);
+    const either = failure<Error, number>(new Error("error"));
+    const expected = failure<Error, string>(new Error("error"));
+    const actual = either.map((n) => `${n}番`);
     expect(actual).toEqual(expected);
   });
 
   test("flatMapで何も起こらない", () => {
-    const result = failure<number, Error>(new Error("error"));
-    const expected = failure<string, Error>(new Error("error"));
-    const actual = result.flatMap((n) => success(`${n}番`));
+    const either = failure<Error, number>(new Error("error"));
+    const expected = failure<Error, string>(new Error("error"));
+    const actual = either.flatMap((n) => success(`${n}番`));
     expect(actual).toEqual(expected);
   });
 
   test("mapErrorで値を変換できる", () => {
-    const result = failure(new Error("error"));
+    const either = failure(new Error("error"));
     const expected = failure(new Error("error+mapError"));
-    const actual = result.mapError(
+    const actual = either.mapError(
       (error) => new Error(error.message + "+mapError")
     );
     expect(actual).toEqual(expected);
   });
 
   test("flatMapErrorで値を変換し、平らにできる", () => {
-    const result = failure(new Error("error"));
+    const either = failure(new Error("error"));
     const expected = failure(new Error("error+mapError"));
-    const actual = result.flatMapError((error) =>
+    const actual = either.flatMapError((error) =>
       failure(new Error(error.message + "+mapError"))
     );
     expect(actual).toEqual(expected);
   });
 
   test("isSuccessでfalseを返し、isFailureでtrueを返す", () => {
-    const result = failure(new Error("error"));
-    expect(result.isSuccess).toBeFalsy();
-    expect(result.isFailure).toBeTruthy();
+    const either = failure(new Error("error"));
+    expect(either.isSuccess).toBeFalsy();
+    expect(either.isFailure).toBeTruthy();
   });
 
   test("equalsで同じ値ならばtrueを返す", () => {
-    const result1 = failure(10);
-    const result2 = failure(10);
-    expect(result1.equals(result2)).toBeTruthy();
+    const either1 = failure(10);
+    const either2 = failure(10);
+    expect(either1.equals(either2)).toBeTruthy();
   });
 
   test("equalsで異なる値ならばfalseを返す", () => {
-    const result1 = failure(10);
-    const result2 = failure(20);
-    expect(result1.equals(result2)).toBeFalsy();
+    const either1 = failure(10);
+    const either2 = failure(20);
+    expect(either1.equals(either2)).toBeFalsy();
   });
 
   test("equalsでequatableならばequalsで比較する", () => {
@@ -70,23 +70,23 @@ describe("Failure Tests", () => {
         super();
       }
     }
-    const result1 = failure(new E(10));
-    const result2 = failure(new E(10));
-    expect(result1.equals(result2)).toBeTruthy();
+    const either1 = failure(new E(10));
+    const either2 = failure(new E(10));
+    expect(either1.equals(either2)).toBeTruthy();
   });
 
   test("successと比較するとfalseを返す", () => {
-    const result1 = failure<number, number>(10);
-    const result2 = success<number, number>(10);
-    expect(result1.equals(result2)).toBeFalsy();
+    const either1 = failure<number, number>(10);
+    const either2 = success<number, number>(10);
+    expect(either1.equals(either2)).toBeFalsy();
   });
 
   test("equalsで第三引数に比較関数を渡すと、その関数で比較する", () => {
-    const result1 = failure(10);
-    const result2 = failure(20);
+    const either1 = failure(10);
+    const either2 = failure(20);
     expect(
-      result1.equals(
-        result2,
+      either1.equals(
+        either2,
         () => true,
         (a, b) => a % 10 === b % 10
       )
@@ -94,11 +94,11 @@ describe("Failure Tests", () => {
   });
 
   test("equalsで第三引数に比較関数を渡すと、その関数がfalseを返すならfalseを返す", () => {
-    const result1 = failure(10);
-    const result2 = failure(20);
+    const either1 = failure(10);
+    const either2 = failure(20);
     expect(
-      result1.equals(
-        result2,
+      either1.equals(
+        either2,
         () => true,
         () => false
       )
@@ -106,7 +106,7 @@ describe("Failure Tests", () => {
   });
 
   test("toOptionalでnoneを返す", () => {
-    const result = failure(10);
-    expect(result.toOptional.isEmpty).toBeTruthy();
+    const either = failure(10);
+    expect(either.toOptional.isEmpty).toBeTruthy();
   });
 });

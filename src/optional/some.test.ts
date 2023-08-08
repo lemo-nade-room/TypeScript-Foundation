@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { some } from "./some";
 import { none } from "./none";
-import { success } from "../result";
+import { success } from "../";
 import { Equatable } from "../equality";
 import { Clonable } from "../clone";
 import { Codable } from "../codable";
@@ -117,7 +117,7 @@ describe("Some Tests", () => {
 
   test("toResultでsuccessに変換する", () => {
     const option = some(10);
-    expect(option.toResult(new Error("error"))).toEqual(success(10));
+    expect(option.toEither(new Error("error"))).toEqual(success(10));
   });
 
   test("cloneでvalueをcloneする", () => {

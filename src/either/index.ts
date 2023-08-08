@@ -1,3 +1,3 @@
-export * from "./result";
+export * from "./either";
 export * from "./success";
 export * from "./failure";

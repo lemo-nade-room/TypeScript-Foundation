@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { none } from "./none";
 import { some } from "./some";
-import { failure } from "../result";
+import { failure } from "../";
 
 describe("None Tests", () => {
   test("getでErrorを投げる", () => {
@@ -71,9 +71,9 @@ describe("None Tests", () => {
     expect(() => option.unwrap(new Error("Error"))).toThrowError("Error");
   });
 
-  test("toResultでfailureに変換する", () => {
+  test("toEitherでfailureに変換する", () => {
     const option = none();
-    expect(option.toResult(new Error("error"))).toEqual(
+    expect(option.toEither(new Error("error"))).toEqual(
       failure(new Error("error"))
     );
   });

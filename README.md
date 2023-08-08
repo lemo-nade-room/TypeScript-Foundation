@@ -62,7 +62,7 @@ yarn add @lemonaderoom/foundation
   - [Some](src/optional/some.test.ts)
   - [None](src/optional/none.test.ts)
   - [for-yield](src/for/optional-for.test.ts)
-- [Result](src/result/result.test.ts)
+- [Either](src/result/result.test.ts)
   - [Success](src/result/success.test.ts)
   - [Failure](src/result/failure.test.ts)
 - [Sequence](src/sequence/sequence.test.ts)
@@ -85,7 +85,7 @@ classDiagram
     Updatable <|-- Codable
     Comparable : 
     Clonable <|-- Optional
-    Clonable <|-- Result
+    Clonable <|-- Either
     Updatable <|-- Range
     Clonable <|-- Sequence
     Clonable <|-- Set

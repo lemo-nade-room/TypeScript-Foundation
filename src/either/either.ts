@@ -4,56 +4,60 @@ import { failure } from "./failure";
 import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
 
-export interface Result<T, E>
-  extends IEquatableObject<Result<T, E>>,
-    IClonable<Result<T, E>> {
+export interface Either<Failure, Success>
+  extends IEquatableObject<Either<Failure, Success>>,
+    IClonable<Either<Failure, Success>> {
   /** successの場合、値を取得する。failureの場合、Errorを投げる。 */
-  readonly get: T;
+  readonly get: Success;
 
   /** successの場合、Errorを投げる。failureの場合、値を取得する。 */
-  readonly getError: E;
+  readonly getError: Failure;
 
   readonly isSuccess: boolean;
 
   readonly isFailure: boolean;
 
   /** successの場合、値をsomeに変換する。failureの場合、noneを返す。 */
-  readonly toOptional: Optional<T>;
+  readonly toOptional: Optional<Success>;
 
   /** successの場合、値を変換する。failureの場合、何もしない。 */
-  map<U>(f: (value: T) => U): Result<U, E>;
+  map<U>(f: (value: Success) => U): Either<Failure, U>;
 
   /** successの場合、値を変換して平らにする。failureの場合、何もしない。 */
-  flatMap<U>(f: (value: T) => Result<U, E>): Result<U, E>;
+  flatMap<U>(f: (value: Success) => Either<Failure, U>): Either<Failure, U>;
 
   /** successの場合、何もしない。failureの場合、Errorを変換する。 */
-  mapError<U>(f: (error: E) => U): Result<T, U>;
+  mapError<U>(f: (error: Failure) => U): Either<U, Success>;
 
   /** successの場合、何もしない。failureの場合、Errorを変換して平らにする。 */
-  flatMapError<U>(f: (error: E) => Result<T, U>): Result<T, U>;
+  flatMapError<U>(
+    f: (error: Failure) => Either<U, Success>
+  ): Either<U, Success>;
 
   /** 2つのResultを比較する。 */
   equals(
-    compared: Result<T, E>,
-    comparisonFunc?: (a: T, b: T) => boolean,
-    comparisonErrorFunc?: (a: E, b: E) => boolean
+    compared: Either<Failure, Success>,
+    comparisonFunc?: (a: Success, b: Success) => boolean,
+    comparisonErrorFunc?: (a: Failure, b: Failure) => boolean
   ): boolean;
 }
 
-export function resultBuilder<T, E = Error>(cb: () => T): Result<T, E> {
+export function toEither<Success, Failure = Error>(
+  cb: () => Success
+): Either<Failure, Success> {
   try {
     return success(cb());
   } catch (e) {
-    return failure(e as E);
+    return failure(e as Failure);
   }
 }
 
-export async function asyncResultBuilder<T, E = Error>(
-  cb: () => Promise<T>
-): Promise<Result<T, E>> {
+export async function toEitherAsync<Success, Failure = Error>(
+  cb: () => Promise<Success>
+): Promise<Either<Failure, Success>> {
   try {
     return success(await cb());
   } catch (e) {
-    return failure(e as E);
+    return failure(e as Failure);
   }
 }

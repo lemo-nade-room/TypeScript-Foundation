@@ -1,6 +1,6 @@
 import { None, none } from "./none";
 import { Some, some } from "./some";
-import { Result } from "../result";
+import { Either } from "../";
 import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
 import { IEncodable, IDecodable } from "../codable";
@@ -45,7 +45,7 @@ export interface Optional<T>
 
   unwrap(or: Error): T;
 
-  toResult<E>(err: E): Result<T, E>;
+  toEither<E>(err: E): Either<E, T>;
 }
 
 export function optional<T>(

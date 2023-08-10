@@ -1,5 +1,5 @@
 import { IEquatableObject, IEquatable, equals } from "../equality";
-import { IDecodable, IEncodable } from "../codable";
+import { IDecodable, IJSONEncodable } from "../codable";
 import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
@@ -10,7 +10,7 @@ export class Set<Element extends IHashable>
   implements
     IEquatableObject<Set<Element>>,
     IClonable<Set<Element>>,
-    IEncodable,
+    IJSONEncodable,
     IHashableObject<Set<Element>>,
     IDecodable<Set<Element>>,
     IterableIterator<Element>

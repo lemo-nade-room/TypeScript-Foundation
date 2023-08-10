@@ -1,10 +1,10 @@
 import { Optional } from "./optional";
 import { Failure, failure } from "../";
-import { IEncodable, IDecodable } from "../codable";
+import { IJSONEncodable, IDecodable } from "../codable";
 import { Md5 } from "ts-md5";
 
 export class None<T>
-  implements Optional<T>, IEncodable, IDecodable<Optional<T>>
+  implements Optional<T>, IJSONEncodable, IDecodable<Optional<T>>
 {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}

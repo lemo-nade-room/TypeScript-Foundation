@@ -5,7 +5,7 @@ import { equals } from "../equality";
 import { none, None } from "./none";
 import { isClonable } from "../clone";
 import { compare } from "../compare";
-import { isDecodable, isEncodable } from "../codable";
+import { isDecodable, isJSONEncodable } from "../codable";
 import { Md5 } from "ts-md5";
 import { hash } from "../hash";
 
@@ -73,7 +73,7 @@ export class Some<T> implements Optional<T> {
   }
 
   get encode(): unknown {
-    if (isEncodable(this.value)) {
+    if (isJSONEncodable(this.value)) {
       return this.value.encode;
     }
     return this.value;

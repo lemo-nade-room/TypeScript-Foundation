@@ -3,7 +3,12 @@ import { clone, IClonable } from "../clone";
 import { isOptional, none, Optional, optional } from "../optional";
 import { ClosedRange, OpenRange, Range } from "../range";
 import { compareTo } from "../compare";
-import { encode, IDecodable, IEncodable, isDecodable } from "../codable";
+import {
+  JSONEncode,
+  IDecodable,
+  IJSONEncodable,
+  isDecodable,
+} from "../codable";
 import { hash, IHashableObject } from "../hash";
 
 export class Sequence<T>
@@ -12,7 +17,7 @@ export class Sequence<T>
     IHashableObject<Sequence<T>>,
     IClonable<Sequence<T>>,
     IterableIterator<T>,
-    IEncodable,
+    IJSONEncodable,
     IDecodable<Sequence<T>>
 {
   constructor(private readonly values: readonly T[]) {}
@@ -300,7 +305,7 @@ export class Sequence<T>
   }
 
   get encode(): unknown {
-    return this.values.map(encode);
+    return this.values.map(JSONEncode);
   }
 
   decode(object: unknown): Sequence<T> {

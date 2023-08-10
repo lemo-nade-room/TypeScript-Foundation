@@ -1,10 +1,10 @@
-import { IEncodable } from "./iEncodable";
+import { IJSONEncodable } from "./IJSONEncodable";
 import { decode, IDecodable } from "./iDecodable";
 import { Updatable } from "../update";
 
 export class Codable<Self extends object>
   extends Updatable<Self>
-  implements IEncodable, IDecodable<Self>
+  implements IJSONEncodable, IDecodable<Self>
 {
   constructor() {
     super();

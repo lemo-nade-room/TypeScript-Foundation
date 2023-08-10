@@ -5,9 +5,9 @@ import { seq, Sequence } from "../sequence";
 import { None, optional, Optional } from "../optional";
 import {
   decode,
-  encode,
+  JSONEncode,
   IDecodable,
-  IEncodable,
+  IJSONEncodable,
   isDecodable,
 } from "../codable";
 import { clone, IClonable } from "../clone";
@@ -19,7 +19,7 @@ export class Dictionary<K extends DictionaryKey, V>
     IEquatableObject<Dictionary<K, V>>,
     IHashableObject<Dictionary<K, V>>,
     IClonable<Dictionary<K, V>>,
-    IEncodable,
+    IJSONEncodable,
     IDecodable<Dictionary<K, V>>
 {
   constructor(private readonly hashKV: Map<string, Set<KV<K, V>>>) {}
@@ -94,9 +94,9 @@ export class Dictionary<K extends DictionaryKey, V>
     return this.allKvSeq.reduce(
       {},
       (record: Record<string | number, unknown>, kv) => {
-        const encodedKey = encode(kv.key);
+        const encodedKey = JSONEncode(kv.key);
         if (typeof encodedKey === "string" || typeof encodedKey === "number") {
-          record[encodedKey] = encode(kv.value);
+          record[encodedKey] = JSONEncode(kv.value);
           return record;
         }
         return record;

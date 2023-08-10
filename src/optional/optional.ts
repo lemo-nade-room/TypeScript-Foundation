@@ -3,7 +3,7 @@ import { Some, some } from "./some";
 import { Either } from "../";
 import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
-import { IEncodable, IDecodable } from "../codable";
+import { IJSONEncodable, IDecodable } from "../codable";
 import { Comparable } from "../compare";
 import { IHashableObject } from "../hash";
 
@@ -12,7 +12,7 @@ export interface Optional<T>
     IHashableObject<Optional<T>>,
     IClonable<Optional<T>>,
     Comparable<Optional<T>>,
-    IEncodable,
+    IJSONEncodable,
     IDecodable<Optional<T>> {
   /** 値が存在しない場合はErrorを投げる */
   get get(): T;

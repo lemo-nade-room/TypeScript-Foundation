@@ -1,11 +1,9 @@
 import { Optional } from "./optional";
 import { Failure, failure } from "../";
-import { IJSONEncodable, IDecodable } from "../codable";
+import { IJSONEncodable } from "../codable";
 import { Md5 } from "ts-md5";
 
-export class None<T>
-  implements Optional<T>, IJSONEncodable, IDecodable<Optional<T>>
-{
+export class None<T> implements Optional<T>, IJSONEncodable {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
@@ -55,12 +53,8 @@ export class None<T>
     return failure(error);
   }
 
-  get encode(): unknown {
+  get json(): unknown {
     return null;
-  }
-
-  decode(_: unknown): Optional<T> {
-    return none<T>();
   }
 
   compare(_: Optional<T>): boolean {

@@ -156,8 +156,8 @@ export class Set<Element extends IHashable>
     return this.seq[Symbol.iterator]().next();
   }
 
-  get encode(): unknown {
-    return this.seq.encode;
+  get json(): unknown {
+    return this.seq.json;
   }
 
   decode(object: unknown): Set<Element> {

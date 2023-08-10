@@ -3,12 +3,7 @@ import { clone, IClonable } from "../clone";
 import { isOptional, none, Optional, optional } from "../optional";
 import { ClosedRange, OpenRange, Range } from "../range";
 import { compareTo } from "../compare";
-import {
-  JSONEncode,
-  IDecodable,
-  IJSONEncodable,
-  isDecodable,
-} from "../codable";
+import { JSONEncode, IJSONEncodable } from "../codable";
 import { hash, IHashableObject } from "../hash";
 
 export class Sequence<T>
@@ -17,8 +12,7 @@ export class Sequence<T>
     IHashableObject<Sequence<T>>,
     IClonable<Sequence<T>>,
     IterableIterator<T>,
-    IJSONEncodable,
-    IDecodable<Sequence<T>>
+    IJSONEncodable
 {
   constructor(private readonly values: readonly T[]) {}
 
@@ -304,23 +298,8 @@ export class Sequence<T>
     return this.values[Symbol.iterator]().next();
   }
 
-  get encode(): unknown {
+  get json(): unknown {
     return this.values.map(JSONEncode);
-  }
-
-  decode(object: unknown): Sequence<T> {
-    if (this.isEmpty) {
-      throw new Error("empty sequence cannot decode");
-    }
-    if (!Array.isArray(object)) {
-      throw new Error("not array");
-    }
-    if (!isDecodable(this.get(0))) {
-      return seq(object as readonly T[]);
-    }
-    return seq(object).reduce(seq(), (result, element) => {
-      return result.append((this.get(0) as IDecodable<T>).decode(element));
-    });
   }
 
   get hashValue(): string {

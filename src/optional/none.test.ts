@@ -78,17 +78,12 @@ describe("None Tests", () => {
     );
   });
 
-  test("decodeはnoneを返す", () => {
-    const option = none();
-    expect(option.decode({})).toEqual(none());
+  test("encodeするとnullを返す", () => {
+    expect(none().json).toBeNull();
   });
 
   test("encodeするとnullを返す", () => {
-    expect(none().encode).toBeNull();
-  });
-
-  test("encodeするとnullを返す", () => {
-    expect(none().encode).toBeNull();
+    expect(none().json).toBeNull();
   });
 
   test("compareはtrueを返す", () => {

@@ -32,17 +32,6 @@ describe("Dictionary Tests", () => {
     expect(noneDictionary.get("hello")).toBe(none());
   });
 
-  test("decodable", () => {
-    const json = {
-      hello: true,
-      world: false,
-    };
-    const origin = dict([kv("" as string, true)]);
-    const actual = origin.decode(json);
-    expect(actual.get("hello")).toEqual(some(true));
-    expect(actual.get("world")).toEqual(some(false));
-  });
-
   test("iterable", () => {
     const dictionary = dict({
       hello: "こんにちは",

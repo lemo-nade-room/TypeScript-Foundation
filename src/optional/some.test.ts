@@ -4,7 +4,7 @@ import { none } from "./none";
 import { success } from "../";
 import { Equatable } from "../equality";
 import { Clonable } from "../clone";
-import { Codable } from "../codable";
+import { JSONEncodable } from "../codable";
 import { optional } from "./optional";
 
 describe("Some Tests", () => {
@@ -132,27 +132,15 @@ describe("Some Tests", () => {
     expect(option.value.num).toBe(10);
   });
 
-  class J extends Codable<J> {
+  class J extends JSONEncodable<J> {
     constructor(readonly num: number) {
       super();
     }
   }
 
-  test("optionalでdecodeする", () => {
-    const option = some(new J(0));
-    const actual = option.decode({ num: 100 });
-    expect(actual.value?.num).toBe(100);
-  });
-
-  test("nullをdecodeするとoptionalを返す", () => {
-    const option = some(new J(0));
-    const actual = option.decode(null);
-    expect(actual).toBe(none());
-  });
-
   test("encodeするとvalueをencodeする", () => {
     const option = some(new J(1000));
-    const actual = option.encode;
+    const actual = option.json;
     expect(actual).toEqual({ num: 1000 });
   });
 

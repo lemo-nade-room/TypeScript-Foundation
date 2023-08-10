@@ -1,3 +1,2 @@
-export * from "./codable";
+export * from "./JSONEncodable";
 export * from "./IJSONEncodable";
-export * from "./iDecodable";

@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest";
 import { seq } from "../sequence";
 import { set } from "./set";
 import { assertEquals } from "../equality/assertion.test";
-import { Codable } from "../codable";
+import { JSONEncodable } from "../codable";
 import { Comparable } from "../compare";
 import { none, Optional, some } from "../optional";
 import { Hashable } from "../hash";
@@ -139,7 +139,7 @@ describe("Set Tests", () => {
     assertEquals(actual, expected);
   });
 
-  class N extends Codable<N> implements Comparable<N> {
+  class N extends JSONEncodable<N> implements Comparable<N> {
     constructor(readonly value: number) {
       super();
     }
@@ -184,14 +184,7 @@ describe("Set Tests", () => {
   test("encodableに準拠", () => {
     const sequence = set([1, 2, 3]);
     const expected = [1, 3, 2];
-    const actual = sequence.encode;
-    expect(actual).toEqual(expected);
-  });
-
-  test("decodableに準拠", () => {
-    const json = [{ value: 3 }, { value: 4 }, { value: 6 }];
-    const expected = set([new N(3), new N(4), new N(6)]);
-    const actual = set(new N(0)).decode(json);
+    const actual = sequence.json;
     expect(actual).toEqual(expected);
   });
 

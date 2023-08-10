@@ -55,7 +55,7 @@ yarn add @lemonaderoom/foundation
 - [Equatable](src/equality/equatable.test.ts)
 - [Clonable](src/clone/clonable.test.ts)
 - [Updatable](src/update/updatable.test.ts)
-- [Codable](src/codable/codable.test.ts)
+- [Codable](src/codable/JSONEncodable.test.ts)
 - [Comparable](src/compare/iComparable.test.ts)
 - [Range](src/range/range.test.ts)
 - [Optional](src/optional/optional.test.ts)

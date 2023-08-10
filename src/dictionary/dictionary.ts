@@ -3,13 +3,7 @@ import { IEquatable, equals, IEquatableObject } from "../equality";
 import { set, Set } from "../set/set";
 import { seq, Sequence } from "../sequence";
 import { None, optional, Optional } from "../optional";
-import {
-  decode,
-  JSONEncode,
-  IDecodable,
-  IJSONEncodable,
-  isDecodable,
-} from "../codable";
+import { JSONEncode, IJSONEncodable } from "../codable";
 import { clone, IClonable } from "../clone";
 
 export type DictionaryKey = IHashable & IEquatable;
@@ -19,8 +13,7 @@ export class Dictionary<K extends DictionaryKey, V>
     IEquatableObject<Dictionary<K, V>>,
     IHashableObject<Dictionary<K, V>>,
     IClonable<Dictionary<K, V>>,
-    IJSONEncodable,
-    IDecodable<Dictionary<K, V>>
+    IJSONEncodable
 {
   constructor(private readonly hashKV: Map<string, Set<KV<K, V>>>) {}
 
@@ -90,7 +83,7 @@ export class Dictionary<K extends DictionaryKey, V>
     return this.allKvSeq.some((kv) => f(kv.key, kv.value));
   }
 
-  get encode(): Record<string | number, unknown> {
+  get json(): Record<string | number, unknown> {
     return this.allKvSeq.reduce(
       {},
       (record: Record<string | number, unknown>, kv) => {
@@ -102,32 +95,6 @@ export class Dictionary<K extends DictionaryKey, V>
         return record;
       }
     );
-  }
-
-  decode(object: unknown): Dictionary<K, V> {
-    if (typeof object !== "object" || object == null) {
-      throw new Error(`${object} should be object`);
-    }
-    if (Array.isArray(object)) {
-      throw new Error(`${object} should be object, but it is array`);
-    }
-    if (this.isEmpty) {
-      throw new Error(`${this} is empty Dictionary`);
-    }
-    const { key, value } = this.allKvSeq.get(0);
-    if (
-      !(typeof key === "string" || typeof key === "number" || isDecodable(key))
-    ) {
-      throw new Error("Dictionary key should be string or number or Decodable");
-    }
-    let dictionary = dict<K, V>();
-    for (const jsonKey in object) {
-      dictionary = dictionary.put(
-        jsonKey as K,
-        decode((object as Record<string, V>)[jsonKey], value as any)
-      );
-    }
-    return dictionary;
   }
 
   get clone(): Dictionary<K, V> {

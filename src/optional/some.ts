@@ -24,9 +24,9 @@ export class Some<T> implements OptionalAble<T> {
     return this;
   }
 
-  isDefined = true;
+  isDefined: true = true;
 
-  isEmpty = false;
+  isEmpty: false = false;
 
   map<U>(f: (value: T) => U): Optional<U> {
     return new Some(f(this.value));

@@ -25,9 +25,9 @@ export class None<T> implements OptionalAble<T>, IJSONEncodable {
     return defaultValue;
   }
 
-  isDefined = false;
+  isDefined: false = false;
 
-  isEmpty = true;
+  isEmpty: true = true;
 
   map<U>(f: (value: T) => U): Optional<U> {
     return none<U>();

@@ -1,5 +1,4 @@
 import { IJSONEncodable, JSONEncode } from "./IJSONEncodable";
-import { decode, IDecodable } from "./iDecodable";
 import { Updatable } from "../update";
 
 export class JSONEncodable<Self extends object>

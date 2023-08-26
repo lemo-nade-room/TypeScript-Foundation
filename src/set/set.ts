@@ -1,5 +1,5 @@
 import { IEquatableObject, IEquatable, equals } from "../equality";
-import { IDecodable, IJSONEncodable } from "../codable";
+import { IJSONEncodable } from "../codable";
 import { IClonable } from "../clone";
 import { seq, Sequence } from "../sequence";
 import { Optional } from "../optional";
@@ -12,7 +12,6 @@ export class Set<Element extends IHashable>
     IClonable<Set<Element>>,
     IJSONEncodable,
     IHashableObject<Set<Element>>,
-    IDecodable<Set<Element>>,
     IterableIterator<Element>
 {
   private readonly seq: Sequence<Element>;
@@ -158,10 +157,6 @@ export class Set<Element extends IHashable>
 
   get json(): unknown {
     return this.seq.json;
-  }
-
-  decode(object: unknown): Set<Element> {
-    return set(this.seq.decode(object));
   }
 
   equals(other: Set<Element>): boolean {

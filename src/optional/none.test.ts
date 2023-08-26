@@ -26,12 +26,12 @@ describe("None Tests", () => {
 
   test("isDefinedはfalse", () => {
     const option = none();
-    expect(option.isDefined()).toBeFalsy();
+    expect(option.isDefined).toBeFalsy();
   });
 
   test("isEmptyはtrue", () => {
     const option = none();
-    expect(option.isEmpty()).toBeTruthy();
+    expect(option.isEmpty).toBeTruthy();
   });
 
   test("mapでnoneを返す", () => {

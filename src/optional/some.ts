@@ -1,4 +1,4 @@
-import { Optional } from "./optional";
+import { Optional, OptionalAble } from "./optional";
 import { Either } from "../";
 import { success } from "../";
 import { equals } from "../equality";
@@ -9,7 +9,7 @@ import { isJSONEncodable } from "../codable";
 import { Md5 } from "ts-md5";
 import { hash } from "../hash";
 
-export class Some<T> implements Optional<T> {
+export class Some<T> implements OptionalAble<T> {
   constructor(readonly value: T) {}
 
   get get(): T {
@@ -24,13 +24,9 @@ export class Some<T> implements Optional<T> {
     return this;
   }
 
-  isDefined(): this is Some<T> {
-    return true;
-  }
+  isDefined = true;
 
-  isEmpty(): this is None<T> {
-    return false;
-  }
+  isEmpty = false;
 
   map<U>(f: (value: T) => U): Optional<U> {
     return new Some(f(this.value));

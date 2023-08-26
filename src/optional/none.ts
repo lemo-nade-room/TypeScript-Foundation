@@ -1,9 +1,9 @@
-import { Optional } from "./optional";
+import { Optional, OptionalAble } from "./optional";
 import { Failure, failure, Some } from "../";
 import { IJSONEncodable } from "../codable";
 import { Md5 } from "ts-md5";
 
-export class None<T> implements Optional<T>, IJSONEncodable {
+export class None<T> implements OptionalAble<T>, IJSONEncodable {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
@@ -25,13 +25,9 @@ export class None<T> implements Optional<T>, IJSONEncodable {
     return defaultValue;
   }
 
-  isDefined(): this is Some<T> {
-    return false;
-  }
+  isDefined = false;
 
-  isEmpty(): this is None<T> {
-    return true;
-  }
+  isEmpty = true;
 
   map<U>(f: (value: T) => U): Optional<U> {
     return none<U>();

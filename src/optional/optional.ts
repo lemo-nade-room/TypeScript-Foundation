@@ -7,7 +7,7 @@ import { IJSONEncodable } from "../codable";
 import { Comparable } from "../compare";
 import { IHashableObject } from "../hash";
 
-export interface Optional<T>
+export interface OptionalAble<T>
   extends IEquatableObject<Optional<T> | T>,
     IHashableObject<Optional<T>>,
     IClonable<Optional<T>>,
@@ -26,10 +26,10 @@ export interface Optional<T>
   orElse(defaultValue: Optional<T>): Optional<T>;
 
   /** 値が存在するかどうか */
-  isDefined(): this is Some<T>;
+  isDefined: boolean;
 
   /** 値が存在しないかどうか */
-  isEmpty(): this is None<T>;
+  isEmpty: boolean;
 
   map<U>(f: (value: T) => U): Optional<U>;
 
@@ -46,6 +46,8 @@ export interface Optional<T>
 
   toEither<E>(err: E): Either<E, T>;
 }
+
+export type Optional<T> = Some<T> | None<T>;
 
 export function optional<T>(
   value: T | null | undefined | None<T>

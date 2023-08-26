@@ -30,12 +30,12 @@ describe("Some Tests", () => {
 
   test("isDefinedはtrue", () => {
     const option = some("hello");
-    expect(option.isDefined()).toBeTruthy();
+    expect(option.isDefined).toBeTruthy();
   });
 
   test("isEmptyはfalse", () => {
     const option = some("hello");
-    expect(option.isEmpty()).toBeFalsy();
+    expect(option.isEmpty).toBeFalsy();
   });
 
   test("mapで値を変換できる", () => {

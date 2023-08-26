@@ -1,5 +1,5 @@
 import { Optional } from "./optional";
-import { Failure, failure } from "../";
+import { Failure, failure, Some } from "../";
 import { IJSONEncodable } from "../codable";
 import { Md5 } from "ts-md5";
 
@@ -25,9 +25,13 @@ export class None<T> implements Optional<T>, IJSONEncodable {
     return defaultValue;
   }
 
-  readonly isDefined = false;
+  isDefined(): this is Some<T> {
+    return false;
+  }
 
-  readonly isEmpty = true;
+  isEmpty(): this is None<T> {
+    return true;
+  }
 
   map<U>(f: (value: T) => U): Optional<U> {
     return none<U>();

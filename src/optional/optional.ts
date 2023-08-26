@@ -3,7 +3,7 @@ import { Some, some } from "./some";
 import { Either } from "../";
 import { IEquatableObject } from "../equality";
 import { IClonable } from "../clone";
-import { IJSONEncodable, IDecodable } from "../codable";
+import { IJSONEncodable } from "../codable";
 import { Comparable } from "../compare";
 import { IHashableObject } from "../hash";
 
@@ -12,8 +12,7 @@ export interface Optional<T>
     IHashableObject<Optional<T>>,
     IClonable<Optional<T>>,
     Comparable<Optional<T>>,
-    IJSONEncodable,
-    IDecodable<Optional<T>> {
+    IJSONEncodable {
   /** 値が存在しない場合はErrorを投げる */
   get get(): T;
 
@@ -27,10 +26,10 @@ export interface Optional<T>
   orElse(defaultValue: Optional<T>): Optional<T>;
 
   /** 値が存在するかどうか */
-  get isDefined(): boolean;
+  isDefined(): this is Some<T>;
 
   /** 値が存在しないかどうか */
-  get isEmpty(): boolean;
+  isEmpty(): this is None<T>;
 
   map<U>(f: (value: T) => U): Optional<U>;
 

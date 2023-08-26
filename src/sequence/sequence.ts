@@ -92,7 +92,7 @@ export class Sequence<T>
   compactMap<Option, TO>(
     f: (value: Option, index: number, sequence: Sequence<Option>) => TO
   ): Sequence<TO> {
-    return this.filter((option) => isOptional<TO>(option) && option.isDefined)
+    return this.filter((option) => isOptional<TO>(option) && option.isDefined())
       .map((option) => (option as Optional<Option>).get)
       .map((v, i, sequence) => f(v, i, sequence));
   }

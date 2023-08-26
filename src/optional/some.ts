@@ -2,7 +2,7 @@ import { Optional } from "./optional";
 import { Either } from "../";
 import { success } from "../";
 import { equals } from "../equality";
-import { none, None } from "./none";
+import { None } from "./none";
 import { isClonable } from "../clone";
 import { compare } from "../compare";
 import { isJSONEncodable } from "../codable";
@@ -24,9 +24,13 @@ export class Some<T> implements Optional<T> {
     return this;
   }
 
-  readonly isDefined = true;
+  isDefined(): this is Some<T> {
+    return true;
+  }
 
-  readonly isEmpty = false;
+  isEmpty(): this is None<T> {
+    return false;
+  }
 
   map<U>(f: (value: T) => U): Optional<U> {
     return new Some(f(this.value));
